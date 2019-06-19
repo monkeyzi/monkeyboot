@@ -19,6 +19,11 @@
         <lombok.version>1.18.6</lombok.version>
         <hutool.vsersion>4.5.5</hutool.vsersion>
         <spring-platform.version>Cairo-SR7</spring-platform.version>
+        <mysql.connector.version>8.0.15</mysql.connector.version>
+        <mybatis.plus.version>3.1.0</mybatis.plus.version>
+        <druid.starter.version>1.1.16</druid.starter.version>
+        <pagehelper.version>1.2.3</pagehelper.version>
+        <fastjson.version>1.2.54</fastjson.version>
     </properties>
 
     <dependencies>
@@ -70,6 +75,36 @@
                        <groupId>org.springframework.boot</groupId>
                    </exclusion>
                </exclusions>
+           </dependency>
+           <!--druid-->
+           <dependency>
+               <groupId>com.alibaba</groupId>
+               <artifactId>druid-spring-boot-starter</artifactId>
+               <version>${druid.starter.version}</version>
+           </dependency>
+           <!--mybatis plus-->
+           <dependency>
+               <groupId>com.baomidou</groupId>
+               <artifactId>mybatis-plus-boot-starter</artifactId>
+               <version>${mybatis.plus.version}</version>
+           </dependency>
+           <!--mysql-->
+           <dependency>
+               <groupId>mysql</groupId>
+               <artifactId>mysql-connector-java</artifactId>
+               <version>${mysql.connector.version}</version>
+           </dependency>
+           <!--fastjson-->
+           <dependency>
+               <groupId>com.alibaba</groupId>
+               <artifactId>fastjson</artifactId>
+               <version>${fastjson.version}</version>
+           </dependency>
+           <!--pageHelper分页插件-->
+           <dependency>
+               <groupId>com.github.pagehelper</groupId>
+               <artifactId>pagehelper-spring-boot-starter</artifactId>
+               <version>${pagehelper.version}</version>
            </dependency>
        </dependencies>
 
