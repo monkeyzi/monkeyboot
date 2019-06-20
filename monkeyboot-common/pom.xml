@@ -15,6 +15,7 @@
         <module>monkeyboot-common-redis-starter</module>
         <module>monkeyboot-common-core</module>
         <module>monkeyboot-common-utils</module>
+        <module>monkeyboot-common-db-starter</module>
     </modules>
 
 
