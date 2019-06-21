@@ -13,7 +13,7 @@ import com.monkeyzi.mboot.common.core.service.ISuperService;
  * @blog http://www.monkeyzi.xin
  * @description:
  */
-public class ISuperServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,T> implements ISuperService<T> {
+public class SuperServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,T> implements ISuperService<T> {
     /**
      * 幂等新增
      * @param entity
@@ -22,6 +22,16 @@ public class ISuperServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,
      * @return
      */
     public R saveIdempotency(T entity, String lockKey, Wrapper<T> countWrapper) {
-        return null;
+        return R.ok();
+    }
+
+    /**
+     * 幂等新增
+     * @param entity
+     * @param lockKey
+     * @return
+     */
+    public R saveIdempotency(T entity, String lockKey) {
+        return R.ok();
     }
 }

@@ -1,6 +1,6 @@
 package com.monkeyzi.mboot.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.monkeyzi.mboot.common.db.mapper.SuperMapper;
 import com.monkeyzi.mboot.entity.Blog;
 
 /**
@@ -10,5 +10,5 @@ import com.monkeyzi.mboot.entity.Blog;
  * @blog http://www.monkeyzi.xin
  * @description:
  */
-public interface BlogMapper extends BaseMapper<Blog> {
+public interface BlogMapper extends SuperMapper<Blog> {
 }

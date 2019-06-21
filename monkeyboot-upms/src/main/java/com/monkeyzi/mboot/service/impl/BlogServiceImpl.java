@@ -1,8 +1,9 @@
-package com.monkeyzi.mboot.service;
+package com.monkeyzi.mboot.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.monkeyzi.mboot.common.core.service.impl.SuperServiceImpl;
 import com.monkeyzi.mboot.entity.Blog;
 import com.monkeyzi.mboot.mapper.BlogMapper;
+import com.monkeyzi.mboot.service.BlogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class BlogServiceImpl extends ServiceImpl<BlogMapper,Blog> implements BlogService {
+public class BlogServiceImpl extends SuperServiceImpl<BlogMapper,Blog> implements BlogService {
 }

@@ -20,4 +20,13 @@ public interface ISuperService<T> extends IService<T> {
      * @return
      */
     R saveIdempotency(T entity,String lockKey, Wrapper<T> countWrapper);
+
+    /**
+     * 幂等新增记录
+     * @param entity
+     * @param lockKey
+     * @return
+     */
+    R saveIdempotency(T entity,String lockKey);
+
 }

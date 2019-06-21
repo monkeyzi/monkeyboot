@@ -2,6 +2,7 @@ package com.monkeyzi.mboot.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.holder.UserContextHolder;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.Blog;
 import com.monkeyzi.mboot.service.BlogService;
@@ -39,5 +40,19 @@ public class IndexController {
         PageInfo pageInfo=new PageInfo(list);
         taskExecutor.execute(()-> log.info("你好-----------"));
         return R.ok("ok",pageInfo);
+    }
+
+    @GetMapping(value = "/holder")
+    public R holder(){
+        Blog blog=new Blog();
+        blog.setBlogId(111);
+        blog.setUserId(222);
+        UserContextHolder.getInstance().setContext(blog);
+        Blog context = (Blog) UserContextHolder.getInstance().getContext();
+        System.out.println("context1=:"+context);
+        UserContextHolder.getInstance().remove();
+        Blog context2 = (Blog) UserContextHolder.getInstance().getContext();
+        System.out.println("context2=:"+context2);
+        return R.okMsg("查询成功");
     }
 }

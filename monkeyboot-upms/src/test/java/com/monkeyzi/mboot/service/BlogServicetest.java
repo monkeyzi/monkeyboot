@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.UpmsApplicationTests;
+import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.Blog;
 import com.monkeyzi.mboot.mapper.BlogMapper;
 import org.junit.Test;
@@ -30,4 +31,23 @@ public class BlogServicetest extends UpmsApplicationTests {
         PageInfo pageInfo=new PageInfo(list);
         System.out.println(pageInfo);
     }
+
+    @Test
+    public void test1(){
+        Blog blog=this.blogService.getById(111);
+        System.out.println(blog);
+    }
+
+
+    @Test
+    public void  test2(){
+        R result=this.blogService.saveIdempotency(new Blog(),"kee");
+        if (result.isSuccess()){
+            System.out.println("ok");
+        }else {
+            System.out.println("error");
+        }
+
+    }
+
 }
