@@ -1,14 +1,18 @@
 package com.monkeyzi.mboot.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.result.R;
-import eu.bitwalker.useragentutils.*;
+import com.monkeyzi.mboot.protocal.req.UserPageReq;
+import com.monkeyzi.mboot.service.MbootUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @author: 高yg
@@ -19,21 +23,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @Slf4j
+@RequestMapping(value = "/user")
 public class MbootUserController {
 
-    @Resource
-    private TaskExecutor taskExecutor;
+    @Autowired
+    private MbootUserService mbootUserService;
 
-    @GetMapping(value = "/index")
-    public R index(HttpServletRequest request){
-        //获取浏览器信息
-        Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
-        final OperatingSystem operatingSystem = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getOperatingSystem();
-        //获取浏览器版本号
-        Version version = browser.getVersion(request.getHeader("User-Agent"));
-        final BrowserType browserType = browser.getBrowserType();
-        System.out.println(browser.getName()+"version="+version+"type="+browserType.getName()+"system="+operatingSystem.getName());
-        return R.ok("ok",null);
+    @GetMapping(value = "/list")
+    public R index(@Valid  UserPageReq req){
+        log.info("分页查询用户列表的参数为 param={}",req);
+        PageInfo pageInfo=mbootUserService.listPageUserByCondition(req);
+        return R.ok("ok",pageInfo);
     }
 
     @GetMapping(value = "/holder")

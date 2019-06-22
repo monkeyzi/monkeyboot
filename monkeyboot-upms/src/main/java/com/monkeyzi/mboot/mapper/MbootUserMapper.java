@@ -2,6 +2,9 @@ package com.monkeyzi.mboot.mapper;
 
 import com.monkeyzi.mboot.common.db.mapper.SuperMapper;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.protocal.req.UserPageReq;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -11,4 +14,6 @@ import com.monkeyzi.mboot.entity.MbootUser;
  * @description:
  */
 public interface MbootUserMapper extends SuperMapper<MbootUser> {
+
+    List<MbootUser> selectUserByPageAndCondition(UserPageReq req);
 }

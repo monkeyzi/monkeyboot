@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monkeyzi.mboot.common.core.model.SuperEntity;
@@ -39,6 +40,13 @@ public class MbootUser extends SuperEntity{
     private String  description;
     private String  browser;
     private String  os;
+
+    @TableField(exist = false)
+    private Integer deptId;
+
+    @TableField(exist = false)
+    private String deptName;
+
 
 
 }

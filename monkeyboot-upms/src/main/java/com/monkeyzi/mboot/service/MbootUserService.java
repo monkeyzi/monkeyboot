@@ -1,7 +1,9 @@
 package com.monkeyzi.mboot.service;
 
+import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.service.ISuperService;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.protocal.req.UserPageReq;
 
 /**
  * @author: 高yg
@@ -11,4 +13,10 @@ import com.monkeyzi.mboot.entity.MbootUser;
  * @description:
  */
 public interface MbootUserService extends ISuperService<MbootUser> {
+    /**
+     * 分页查询用户信息
+     * @param req
+     * @return
+     */
+    PageInfo listPageUserByCondition(UserPageReq req);
 }
