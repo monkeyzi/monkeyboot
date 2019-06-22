@@ -5,15 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monkeyzi.mboot.common.core.model.BaseEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 @Data
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode
 @TableName(value = "mboot_error_log")

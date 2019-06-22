@@ -8,10 +8,11 @@ import org.apache.ibatis.type.Alias;
 
 @Data
 @Builder
-@ToString
 @EqualsAndHashCode
 @TableName(value = "mboot_role")
 @Alias(value = "mbootRole")
+@NoArgsConstructor
+@AllArgsConstructor
 public class MbootRole extends SuperEntity {
 
     private String  roleName;

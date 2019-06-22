@@ -2,16 +2,14 @@ package com.monkeyzi.mboot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.monkeyzi.mboot.common.core.model.BaseEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
 @Data
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode
 @TableName(value = "mboot_log")

@@ -9,7 +9,8 @@ import org.apache.ibatis.type.Alias;
 import java.time.LocalDateTime;
 
 @Data
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode
 @TableName(value = "mboot_user_role")

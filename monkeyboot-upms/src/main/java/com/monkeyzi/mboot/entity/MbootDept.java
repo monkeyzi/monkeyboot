@@ -7,10 +7,11 @@ import lombok.*;
 import org.apache.ibatis.type.Alias;
 @Data
 @Builder
-@ToString
 @EqualsAndHashCode
 @TableName(value = "mboot_dept")
 @Alias(value = "mbootDept")
+@NoArgsConstructor
+@AllArgsConstructor
 public class MbootDept extends SuperEntity {
 
     private String  deptName;

@@ -4,7 +4,7 @@ spring:
   application:
     name: monkeyboot-upms
   datasource:
-      url: jdbc:mysql://monkeyboot:3306/blog?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://monkeyzi:3306/monkeyboot?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
       username: guoguo
       password: gao1223fengguo
       type: com.alibaba.druid.pool.DruidDataSource
@@ -20,20 +20,24 @@ mybatis-plus:
   # 放在resource目录 classpath:/mapper/*Mapper.xml
   mapper-locations: classpath:/mapper/*Mapper.xml
   global-config:
-    # 主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
-    id-type: 0
-    # 字段策略 0:"忽略判断",1:"非 NULL 判断",2:"非空判断"
-    field-strategy: 1
-    # 驼峰下划线转换
-    db-column-underline: true
-    # 刷新mapper 调试神器
-    refresh-mapper: true
-    # 逻辑删除配置（下面3个配置）使用的时候在字段上加上@TableLogic
-    logic-delete-value: 1
-    logic-not-delete-value: 0
+    db-config:
+      # 主键类型  AUTO(0),NONE(1),INPUT(2),ID_WORKER(3),UUID(4),ID_WORKER_STR(5);
+      id-type: auto
+      # 逻辑删除配置（下面3个配置）使用的时候在字段上加上@TableLogic  0默认不删除  1删除
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 数据库类型
+      db-type: mysql
+      #字段验证策略  默认也是NOT_NULL
+      field-strategy: default
+    # 关闭mp banner 启动的时候不让在控制台打印
+    banner: false
     # SQL 解析缓存，开启后多租户 @SqlParser 注解生效
     sql-parser-cache: true
   configuration:
+    #开发驼峰命名转化
     map-underscore-to-camel-case: true
+    # 是否开启缓存
     cache-enabled: false
+  #别名
   type-aliases-package: com.monkeyzi.mboot.entity

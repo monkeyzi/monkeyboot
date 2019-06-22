@@ -3,17 +3,15 @@ package com.monkeyzi.mboot.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @Builder
 @TableName(value = "mboot_role_permission")

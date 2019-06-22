@@ -3,14 +3,12 @@ package com.monkeyzi.mboot.entity;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monkeyzi.mboot.common.core.model.SuperEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode
 @TableName(value = "mboot_file_folder")
