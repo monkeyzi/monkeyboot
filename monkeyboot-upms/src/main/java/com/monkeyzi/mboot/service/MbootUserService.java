@@ -1,7 +1,6 @@
 package com.monkeyzi.mboot.service;
 
 import com.monkeyzi.mboot.common.core.service.ISuperService;
-import com.monkeyzi.mboot.entity.Blog;
 import com.monkeyzi.mboot.entity.MbootUser;
 
 /**

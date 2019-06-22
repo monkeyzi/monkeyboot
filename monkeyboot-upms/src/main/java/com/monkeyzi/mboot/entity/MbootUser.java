@@ -36,7 +36,9 @@ public class MbootUser extends SuperEntity{
     private Integer tenantId;
     private String  lastLoginIp;
     private LocalDateTime lastLoginTime;
-    private String description;
+    private String  description;
+    private String  browser;
+    private String  os;
 
 
 }

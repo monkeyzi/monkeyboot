@@ -1,7 +1,6 @@
 package com.monkeyzi.mboot.mapper;
 
 import com.monkeyzi.mboot.common.db.mapper.SuperMapper;
-import com.monkeyzi.mboot.entity.Blog;
 import com.monkeyzi.mboot.entity.MbootUser;
 
 /**
