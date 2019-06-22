@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Profile;
  * @blog http://www.monkeyzi.xin
  * @description:
  */
+@Import(MbootDateMetaObjectHandler.class)
 public class DefaultMybatisPlusConfig {
 
 

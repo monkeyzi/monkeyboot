@@ -4,7 +4,7 @@ spring:
   application:
     name: monkeyboot-upms
   datasource:
-      url: jdbc:mysql://monkeyzi:3306/blog?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://monkeyboot:3306/blog?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
       username: guoguo
       password: gao1223fengguo
       type: com.alibaba.druid.pool.DruidDataSource
