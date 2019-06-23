@@ -8,7 +8,18 @@ import lombok.Data;
 @Data
 public class UserPageReq extends BasePageReq {
 
-    private String startTime;
+    private String  startTime;
 
-    private String endTime;
+    private String  endTime;
+
+    private Integer deptId;
+
+    private String  username;
+
+    private String  phone;
+
+    private Integer userType;
+
+    private Integer status;
+
 }

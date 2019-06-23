@@ -12,4 +12,10 @@ import com.monkeyzi.mboot.entity.MbootRolePermission;
  * @description:
  */
 public interface MbootRolePermissionService extends ISuperService<MbootRolePermission> {
+    /**
+     * 根据角色删除
+     * @param roleId
+     * @return
+     */
+    int deleteByRoleId(Integer  roleId);
 }

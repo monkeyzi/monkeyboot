@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.monkeyzi.mboot.common.core.exception.MbootGlobalExceptionHandler
+  com.monkeyzi.mboot.common.core.exception.MbootGlobalExceptionHandler,\
+  com.monkeyzi.mboot.common.core.config.jackson.JacksonConfig

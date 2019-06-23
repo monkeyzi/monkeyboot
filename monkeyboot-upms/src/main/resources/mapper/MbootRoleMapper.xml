@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.mboot.mapper.MbootRoleMapper">
+	<!--角色表基础resultMap-->
+	<resultMap id="ResultMap" type="mbootRole">
+		<id property="id" column="id"/>
+		<result property="roleName" column="role_name"/>
+		<result property="roleCode" column="role_code"/>
+		<result property="roleDataScope" column="role_data_scope"/>
+		<result property="isDel" column="is_del"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="description" column="description"/>
+		<result property="dataScopeType" column="data_scope_type"/>
+	</resultMap>
+    <!--角色表基础返回sql字段-->
+	<sql id="Base_Column_List">
+		r.id,
+		r.role_name,
+		r.role_code,
+		r.description,
+		r.role_data_scope,
+		r.is_del,
+		r.create_time,
+		r.update_time,
+		r.create_by,
+		r.update_by,
+		r.tenant_id,
+		r.data_scope_type
+
+	</sql>
+
+	<sql id="Base_Where_Condition" >
+		<if test="roleName != null and roleName != ''" >
+			AND ${alias}.role_name like concat("%",#{roleName,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="roleCode != null and roleCode != ''" >
+			AND ${alias}.role_code = like concat("%",#{roleCode,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND ${alias}.create_time &gt;= str_to_date(#{startTime}, '%Y-%m-%d %H')
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND ${alias}.create_time &lt;= str_to_date(#{endTime}, '%Y-%m-%d %T')
+		</if>
+	</sql>
+
+    <!--条件查询-->
+    <select id="selectPageRoleByCondition" parameterType="com.monkeyzi.mboot.protocal.req.RolePageReq" resultMap="ResultMap">
+		 SELECT
+		 <include refid="Base_Column_List"/>
+		 FROM mboot_role AS r
+		 WHERE 1 = 1
+		 <include refid="Base_Where_Condition">
+			<property name="alias" value="r"></property>
+		 </include>
+		 AND r.is_del=0
+		 ORDER BY r.create_time desc
+	</select>
+
+
+
+</mapper>

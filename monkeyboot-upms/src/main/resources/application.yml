@@ -9,6 +9,7 @@ spring:
       password: gao1223fengguo
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.cj.jdbc.Driver
+  # exception     
   mvc:
     throw-exception-if-no-handler-found: true
   resources:

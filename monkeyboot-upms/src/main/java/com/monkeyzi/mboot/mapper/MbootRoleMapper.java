@@ -3,6 +3,9 @@ package com.monkeyzi.mboot.mapper;
 import com.monkeyzi.mboot.common.db.mapper.SuperMapper;
 import com.monkeyzi.mboot.entity.MbootRole;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.protocal.req.RolePageReq;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -12,4 +15,10 @@ import com.monkeyzi.mboot.entity.MbootUser;
  * @description:
  */
 public interface MbootRoleMapper extends SuperMapper<MbootRole> {
+    /**
+     * 分页条件查询角色
+     * @param req
+     * @return
+     */
+    List<MbootRole> selectPageRoleByCondition(RolePageReq req);
 }

@@ -22,6 +22,7 @@ public class MbootRole extends SuperEntity {
     @TableLogic
     private Integer isDel;
     private Integer tenantId;
+    private Integer dataScopeType;
 
 
 }

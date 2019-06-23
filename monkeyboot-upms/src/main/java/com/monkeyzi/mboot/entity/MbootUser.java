@@ -8,12 +8,13 @@ import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @TableName(value = "mboot_user")
 @Alias(value = "mbootUser")
 public class MbootUser extends SuperEntity{
@@ -32,6 +33,7 @@ public class MbootUser extends SuperEntity{
      */
     @TableLogic
     private Integer isDel;
+    private Integer deptId;
     private String  wxOpenId;
     private String  qqOpenId;
     private Integer tenantId;
@@ -42,11 +44,9 @@ public class MbootUser extends SuperEntity{
     private String  os;
 
     @TableField(exist = false)
-    private Integer deptId;
-
-    @TableField(exist = false)
     private String deptName;
 
-
+    @TableField(exist = false)
+    private List<MbootRole> roleList;
 
 }

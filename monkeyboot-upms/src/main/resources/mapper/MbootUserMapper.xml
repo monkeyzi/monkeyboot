@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.mboot.mapper.MbootUserMapper">
+	<!--用户表基础resultMap-->
+	<resultMap id="ResultMap" type="mbootUser">
+		<id property="id" column="id"/>
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>
+		<result property="nickname" column="nickname"/>
+		<result property="headImg" column="head_img"/>
+		<result property="sex" column="sex"/>
+		<result property="userType" column="user_Type"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="status" column="status"/>
+		<result property="isDel" column="is_del"/>
+		<result property="deptId" column="dept_id"/>
+		<result property="wxOpenId" column="wx_open_id"/>
+		<result property="qqOpenId" column="qq_open_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="lastLoginIp" column="last_login_ip"/>
+		<result property="lastLoginTime" column="last_login_time"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="description" column="description"/>
+		<result property="browser" column="browser"/>
+		<result property="os" column="os"/>
+		<collection property="roleList" ofType="com.monkeyzi.mboot.entity.MbootRole">
+			<id column="role_id" property="id"/>
+			<result column="role_name" property="roleName"/>
+			<result column="role_code" property="roleCode"/>
+		</collection>
+	</resultMap>
+    <!--用户表基础返回sql字段-->
+	<sql id="Base_Column_List">
+		u.id,
+		u.username,
+		u.password,
+		u.nickname,
+		u.head_img,
+		u.sex,
+		u.user_type,
+		u.phone,
+		u.email,
+		u.status,
+		u.is_del,
+		u.dept_id,
+		u.wx_open_id,
+		u.last_login_ip,
+		u.last_login_time,
+		u.create_time,
+		u.create_by,
+		u.update_time,
+		u.update_by,
+		u.qq_open_id,
+		u.tenant_id,
+		u.description,
+		u.browser,
+		u.os,
+		r.id as role_id,
+		r.role_name,
+		r.role_code
+	</sql>
+
+	<sql id="Base_Where_Condition" >
+		<if test="username != null and username != ''" >
+			AND ${alias}.username like concat("%",#{username,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="phone != null and phone != ''" >
+			AND ${alias}.phone = like concat("%",#{phone,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="userType != null" >
+			AND ${alias}.user_type = #{userType,jdbcType=INTEGER}
+		</if>
+		<if test="status != null" >
+			AND ${alias}.status = #{status,jdbcType=INTEGER}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND ${alias}.create_time &gt;= str_to_date(#{startTime}, '%Y-%m-%d %H')
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND ${alias}.create_time &lt;= str_to_date(#{endTime}, '%Y-%m-%d %T')
+		</if>
+	</sql>
+
+    <!--条件查询-->
+    <select id="selectUserByPageAndCondition" parameterType="com.monkeyzi.mboot.protocal.req.UserPageReq" resultMap="ResultMap">
+		 SELECT
+		 <include refid="Base_Column_List"/>,d.dept_name as deptName
+		 FROM mboot_user AS u
+		 LEFT JOIN mboot_user_role AS ur ON ur.user_id = u.id
+		 LEFT JOIN mboot_role AS r ON r.id = ur.role_id
+		 LEFT JOIN mboot_dept AS d ON d.id = u.dept_id
+		 WHERE 1 = 1
+		 <include refid="Base_Where_Condition">
+			<property name="alias" value="u"></property>
+		 </include>
+		 AND u.is_del=0
+		 ORDER BY u.create_time desc
+	</select>
+
+
+	<!--根据Id查询用户的基本信息条件查询-->
+	<select id="selectUserInfoVoById" resultMap="ResultMap">
+		SELECT
+		<include refid="Base_Column_List"/>,d.dept_name as deptName
+		FROM mboot_user AS u
+		LEFT JOIN mboot_user_role AS ur ON ur.user_id = u.id
+		LEFT JOIN mboot_role AS r ON r.id = ur.role_id
+		LEFT JOIN mboot_dept AS d ON d.id = u.dept_id
+		WHERE 1 = 1  AND u.is_del=0 AND u.id=#{id}
+		ORDER BY u.create_time desc
+	</select>
+</mapper>
