@@ -21,6 +21,7 @@ public class SuperServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,T
      * @param countWrapper
      * @return
      */
+    @Override
     public R saveIdempotency(T entity, String lockKey, Wrapper<T> countWrapper) {
         return R.ok();
     }
@@ -31,6 +32,7 @@ public class SuperServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,T
      * @param lockKey
      * @return
      */
+    @Override
     public R saveIdempotency(T entity, String lockKey) {
         return R.ok();
     }
