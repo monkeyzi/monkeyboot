@@ -45,6 +45,21 @@
             <artifactId>monkeyboot-common-db-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--稳定版本，替代spring security bom内置-->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${security.oauth.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>${security.oauth.auto.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

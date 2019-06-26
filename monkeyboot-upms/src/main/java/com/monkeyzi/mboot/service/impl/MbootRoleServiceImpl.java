@@ -78,4 +78,9 @@ public class MbootRoleServiceImpl extends SuperServiceImpl<MbootRoleMapper,Mboot
         //删除角色表
         return this.removeById(id);
     }
+
+    @Override
+    public List<MbootRole> getRoleListByUserId(Integer userId) {
+        return mbootRoleMapper.selectRoleListByUserId(userId);
+    }
 }

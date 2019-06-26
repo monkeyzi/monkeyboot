@@ -12,4 +12,5 @@ import com.monkeyzi.mboot.entity.MbootUserRole;
  * @description:
  */
 public interface MbootUserRoleService extends ISuperService<MbootUserRole> {
+
 }

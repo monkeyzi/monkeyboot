@@ -8,7 +8,10 @@ import com.monkeyzi.mboot.mapper.MbootPermissionMapper;
 import com.monkeyzi.mboot.service.MbootDeptService;
 import com.monkeyzi.mboot.service.MbootPermissionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -20,4 +23,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class MbootPermissionServiceImpl extends SuperServiceImpl<MbootPermissionMapper,MbootPermission> implements MbootPermissionService {
+
+    @Autowired
+    private MbootPermissionMapper mbootPermissionMapper;
+
+
+    @Override
+    public List<MbootPermission> getPermissionsByRoleId(Integer roleId) {
+        return mbootPermissionMapper.selectPermissionsByRoleId(roleId);
+    }
 }

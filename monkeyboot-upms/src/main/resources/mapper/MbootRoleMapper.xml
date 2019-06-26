@@ -61,6 +61,13 @@
 		 ORDER BY r.create_time desc
 	</select>
 
+	<!--查询用户所有的角色列表-->
+	<select id="selectRoleListByUserId" resultMap="ResultMap">
+         SELECT <include refid="Base_Column_List"/>
+		 from mboot_role r,mboot_user_role ur where r.id=ur.role_id
+		 AND r.is_del=1
+		 AND ur.user_id=#{userId}
+	</select>
 
 
 </mapper>

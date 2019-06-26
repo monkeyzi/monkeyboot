@@ -21,4 +21,11 @@ public interface MbootRoleMapper extends SuperMapper<MbootRole> {
      * @return
      */
     List<MbootRole> selectPageRoleByCondition(RolePageReq req);
+
+    /**
+     * 查询用户所拥有的角色列表信息
+     * @param userId
+     * @return
+     */
+    List<MbootRole> selectRoleListByUserId(Integer userId);
 }

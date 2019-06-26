@@ -8,6 +8,7 @@ import com.monkeyzi.mboot.protocal.req.UserEditReq;
 import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
 import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
+import com.monkeyzi.mboot.security.entity.MbootLoginUser;
 
 import java.util.List;
 
@@ -67,5 +68,24 @@ public interface MbootUserService extends ISuperService<MbootUser> {
      */
     Integer checkUserName(String username);
 
+    /**
+     * 根据用户名查询用户信息
+     * @param username
+     * @return
+     */
+    MbootLoginUser getUserByUserName(String username);
 
+    /**
+     * 根据手机号查询用户信息
+     * @param mobile
+     * @return
+     */
+    MbootLoginUser getUserByMobilePhone(String mobile);
+
+    /**
+     * 根据微信openid查询用户的信息
+     * @param wxOpenId
+     * @return
+     */
+    MbootLoginUser getUserByWxOpenId(String wxOpenId);
 }

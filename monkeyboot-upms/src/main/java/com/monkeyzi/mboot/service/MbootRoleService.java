@@ -52,4 +52,11 @@ public interface MbootRoleService extends ISuperService<MbootRole> {
      * @return
      */
     boolean delRoleById(Integer id);
+
+    /**
+     * 根据用户Id查询用户的角色
+     * @param userId
+     * @return
+     */
+    List<MbootRole> getRoleListByUserId(Integer userId);
 }
