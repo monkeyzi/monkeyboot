@@ -102,6 +102,23 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     @Override
     public MbootLoginUser getUserByUserName(String username) {
         MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getUsername,username));
+        return getLoginUser(mbootUser);
+    }
+
+    @Override
+    public MbootLoginUser getUserByMobilePhone(String mobile) {
+        MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getPhone,mobile));
+        return getLoginUser(mbootUser);
+    }
+
+    @Override
+    public MbootLoginUser getUserByWxOpenId(String wxOpenId) {
+        MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getWxOpenId,wxOpenId));
+        return getLoginUser(mbootUser);
+    }
+
+
+    private MbootLoginUser getLoginUser(MbootUser mbootUser){
         if (mbootUser!=null){
             MbootLoginUser loginUser=new MbootLoginUser();
             List<MbootRole> roleList=mbootRoleService.getRoleListByUserId(mbootUser.getId());
@@ -122,16 +139,5 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         }
         return null;
     }
-
-    @Override
-    public MbootLoginUser getUserByMobilePhone(String mobile) {
-        return null;
-    }
-
-    @Override
-    public MbootLoginUser getUserByWxOpenId(String wxOpenId) {
-        return null;
-    }
-
 
 }
