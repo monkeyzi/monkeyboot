@@ -35,6 +35,7 @@ public class MbootGlobalExceptionHandler {
         return R.error(405,"method not support");
     }
 
+
     /**
      * 404
      * @return

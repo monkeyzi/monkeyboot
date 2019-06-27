@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.security.service.impl;
 import com.monkeyzi.mboot.security.entity.MbootLoginUser;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import com.monkeyzi.mboot.service.MbootUserService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
@@ -45,10 +46,11 @@ public class MbootUserDetailServiceImpl implements MbootUserDetailService,Social
      * @throws UsernameNotFoundException
      */
     @Override
+    @SneakyThrows
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MbootLoginUser  loginUser=mbootUserService.getUserByUserName(username);
         if (loginUser==null){
-            throw new InternalAuthenticationServiceException("用户名或密码错误！");
+            throw new UsernameNotFoundException("用户名不存在！");
         }
         return checkLoginUser(loginUser);
     }

@@ -41,8 +41,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final MbootUserDetailService mbootUserDetailService;
 
-    private final WebResponseExceptionTranslator webResponseExceptionTranslator;
-
     private final RedisConnectionFactory redisConnectionFactory;
 
     private final MbootClientDetailService mbootClientDetailService;
@@ -74,7 +72,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 //是否重用refresh_token
                 .reuseRefreshTokens(false)
-                .exceptionTranslator(webResponseExceptionTranslator);
+                .exceptionTranslator(new MbootWebResponseExceptionTranslator());
     }
 
     @Override
@@ -82,7 +80,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         security
                 //让/oauth/token支持client_id以及client_secret作登录认证
                 .allowFormAuthenticationForClients()
-                .checkTokenAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
     }
 

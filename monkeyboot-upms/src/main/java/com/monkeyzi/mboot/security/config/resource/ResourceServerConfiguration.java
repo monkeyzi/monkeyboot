@@ -33,8 +33,4 @@ public class ResourceServerConfiguration extends ResourceServerConfigAdapter {
                 .csrf().disable();
     }
 
-    @Override
-    public HttpSecurity setAuthenticate(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.AuthorizedUrl authorizedUrl) {
-        return authorizedUrl.access("@permissionService.hasPermission(request, authentication)").and();
-    }
 }

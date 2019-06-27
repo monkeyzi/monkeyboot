@@ -4,11 +4,14 @@ import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
 import com.monkeyzi.mboot.config.MbootPasswordConfig;
 import com.monkeyzi.mboot.security.mobile.MobileAuthenticationSecurityConfig;
 import com.monkeyzi.mboot.security.properties.SecurityProperties;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 /**
@@ -27,14 +28,13 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
  * @description 认证相关配置
  **/
 @Configuration
+@Primary
+@Order(90)
 @EnableConfigurationProperties(SecurityProperties.class)
 @Import(MbootPasswordConfig.class)
 public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
+
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
@@ -55,6 +55,7 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
      */
     @Bean
     @Override
+    @SneakyThrows
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -80,8 +81,6 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage(SecurityConstants.LOGIN_PAGE)
                 .loginProcessingUrl(SecurityConstants.OAUTH_LOGIN_PRO_URL)
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
                 .and()
                 .logout()
                 .logoutUrl(SecurityConstants.LOGOUT_URL)
