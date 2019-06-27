@@ -58,6 +58,6 @@ public class MbootLoginUser extends MbootUser  implements SocialUserDetails {
 
     @Override
     public boolean isEnabled() {
-        return getStatus()==1;
+        return getStatus()==0;
     }
 }

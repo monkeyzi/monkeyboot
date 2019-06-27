@@ -1,9 +1,12 @@
 package com.monkeyzi.mboot.security.service.impl;
 
+import com.monkeyzi.mboot.security.entity.MbootLoginUser;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import com.monkeyzi.mboot.service.MbootUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.social.security.SocialUserDetails;
@@ -31,7 +34,8 @@ public class MbootUserDetailServiceImpl implements MbootUserDetailService,Social
      */
     @Override
     public UserDetails loadUserByMobilePhone(String mobile)throws  UsernameNotFoundException {
-        return null;
+        MbootLoginUser  loginUser=mbootUserService.getUserByMobilePhone(mobile);
+        return checkLoginUser(loginUser);
     }
 
     /**
@@ -42,7 +46,11 @@ public class MbootUserDetailServiceImpl implements MbootUserDetailService,Social
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        MbootLoginUser  loginUser=mbootUserService.getUserByUserName(username);
+        if (loginUser==null){
+            throw new InternalAuthenticationServiceException("用户名或密码错误！");
+        }
+        return checkLoginUser(loginUser);
     }
 
     /**
@@ -53,6 +61,15 @@ public class MbootUserDetailServiceImpl implements MbootUserDetailService,Social
      */
     @Override
     public SocialUserDetails loadUserByUserId(String openId) throws UsernameNotFoundException {
-        return null;
+        MbootLoginUser  loginUser=mbootUserService.getUserByWxOpenId(openId);
+        return checkLoginUser(loginUser);
+    }
+
+
+    private MbootLoginUser checkLoginUser(MbootLoginUser loginUser){
+        if (loginUser!=null&&!loginUser.isEnabled()){
+             throw new DisabledException("用户已经被禁用！");
+        }
+        return loginUser;
     }
 }

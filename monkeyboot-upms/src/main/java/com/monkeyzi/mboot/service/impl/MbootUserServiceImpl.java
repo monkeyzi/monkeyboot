@@ -23,6 +23,7 @@ import com.monkeyzi.mboot.service.MbootUserService;
 import com.monkeyzi.mboot.utils.util.PublicUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,6 +122,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     private MbootLoginUser getLoginUser(MbootUser mbootUser){
         if (mbootUser!=null){
             MbootLoginUser loginUser=new MbootLoginUser();
+            BeanUtils.copyProperties(mbootUser,loginUser);
             List<MbootRole> roleList=mbootRoleService.getRoleListByUserId(mbootUser.getId());
             //设置角色列表
             loginUser.setRoleList(roleList);
