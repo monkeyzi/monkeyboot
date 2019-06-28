@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,16 +20,6 @@ public class DefaultSecurityHandlerConfig {
     @Autowired
     private ObjectMapper objectMapper;
 
-    /**
-     * 未登录，返回401
-     *
-     * @return
-     */
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, authException) -> ResponseUtil.responseJson(objectMapper, response,
-                authException.getMessage(), HttpStatus.UNAUTHORIZED.value(),Boolean.FALSE);
-    }
 
     @Bean
     public OAuth2WebSecurityExpressionHandler oAuth2WebSecurityExpressionHandler(ApplicationContext applicationContext) {

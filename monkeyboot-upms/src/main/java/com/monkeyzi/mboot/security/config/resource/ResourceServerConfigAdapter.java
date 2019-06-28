@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.annotation.Resource;
 
@@ -22,8 +21,8 @@ public class ResourceServerConfigAdapter extends ResourceServerConfigurerAdapter
     @Autowired
     private TokenStore tokenStore;
 
-    @Resource
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private MbootAuthExceptionEntryPoint authenticationEntryPoint;
 
     @Resource
     private OAuth2WebSecurityExpressionHandler expressionHandler;

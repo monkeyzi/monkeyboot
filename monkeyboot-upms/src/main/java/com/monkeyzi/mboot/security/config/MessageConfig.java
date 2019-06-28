@@ -18,9 +18,8 @@ import java.util.Locale;
 public class MessageConfig {
     @Bean
     public MessageSource messageSource() {
-        Locale.setDefault(Locale.CHINA);
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.addBasenames("classpath:org/springframework/security/messages_zh_CN");
+        messageSource.addBasenames("classpath:org/springframework/security/messages");
         return messageSource;
     }
 

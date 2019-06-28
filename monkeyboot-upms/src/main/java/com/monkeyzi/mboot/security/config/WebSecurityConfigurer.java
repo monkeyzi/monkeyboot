@@ -2,8 +2,11 @@ package com.monkeyzi.mboot.security.config;
 
 import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
 import com.monkeyzi.mboot.config.MbootPasswordConfig;
+import com.monkeyzi.mboot.security.config.resource.MbootAuthExceptionEntryPoint;
 import com.monkeyzi.mboot.security.mobile.MobileAuthenticationSecurityConfig;
+import com.monkeyzi.mboot.security.mobile.MobileLoginSuccessHandler;
 import com.monkeyzi.mboot.security.properties.SecurityProperties;
+import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,9 +20,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 /**
@@ -36,17 +39,16 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    private MbootAuthExceptionEntryPoint authenticationEntryPoint;
     @Autowired
-    private UserDetailsService userDetailsService;
+    private MbootUserDetailService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private SecurityProperties securityProperties;
-    @Autowired
-    private MobileAuthenticationSecurityConfig mobileAuthenticationSecurityConfig;
+
 
     /***
      * 认证管理对象
@@ -70,6 +72,19 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    @Bean
+    public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
+        return MobileLoginSuccessHandler.builder().build();
+    }
+
+    @Bean
+    public MobileAuthenticationSecurityConfig mobileSecurityConfigurer() {
+        MobileAuthenticationSecurityConfig mobileSecurityConfigurer = new MobileAuthenticationSecurityConfig();
+        mobileSecurityConfigurer.setMobileLoginSuccessHandler(mobileLoginSuccessHandler());
+        mobileSecurityConfigurer.setUserDetailsService(userDetailsService);
+        return mobileSecurityConfigurer;
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -87,11 +102,10 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl(SecurityConstants.LOGIN_PAGE)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                 //.addLogoutHandler(oauthLogoutHandler)
-                .clearAuthentication(true)
-                .and()
-                .apply(mobileAuthenticationSecurityConfig)
                 .and()
                 .csrf().disable()
+                .apply(mobileSecurityConfigurer())
+                .and()
                 // 解决不允许显示在iframe的问题
                 .headers().frameOptions().disable().cacheControl();
 

@@ -41,11 +41,6 @@ public interface SecurityConstants {
     String REFRESH_TOKEN = "refresh_token";
 
     /**
-     * oauth token
-     */
-    String OAUTH_TOKEN_URL = "/oauth/token";
-
-    /**
      * 默认的处理验证码的url前缀
      */
     String DEFAULT_VALIDATE_CODE_URL_PREFIX = "/validate/code";
@@ -119,19 +114,25 @@ public interface SecurityConstants {
     /**
      * OAUTH模式登录处理地址
      */
-    String OAUTH_LOGIN_PRO_URL = "/user/login";
+    String OAUTH_LOGIN_PRO_URL = "/oauth/form";
     /**
-     * PASSWORD模式登录处理地址
+     * OAUTH URL
      */
-    String PASSWORD_LOGIN_PRO_URL = "/oauth/user/token";
+    String OAUTH_TOKEN_URL = "/oauth/token";
+
     /**
-     * 默认的OPENID登录请求处理url
+     * 手机号登录URL
      */
-    String OPENID_TOKEN_URL = "/oauth/openId/token";
+    String SMS_TOKEN_URL = "/mobile/token/sms";
+
     /**
-     * 手机登录URL
+     * 社交登录URL
      */
-    String MOBILE_TOKEN_URL = "/oauth/mobile/token";
+    String SOCIAL_TOKEN_URL = "/mobile/token/social";
+    /**
+     * 自定义登录URL
+     */
+    String MOBILE_TOKEN_URL = "/mobile/token/*";
     /**
      * 登出URL
      */
@@ -143,7 +144,7 @@ public interface SecurityConstants {
     /**
      * 登录页面
      */
-    String LOGIN_PAGE = "/login.html";
+    String LOGIN_PAGE = "/oauth/login";
 
 
     /**

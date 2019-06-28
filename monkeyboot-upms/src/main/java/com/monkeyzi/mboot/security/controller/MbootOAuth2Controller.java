@@ -7,10 +7,12 @@ import com.monkeyzi.mboot.security.service.MbootClientDetailService;
 import com.monkeyzi.mboot.security.utils.AuthUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,7 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestValidator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +50,7 @@ public class MbootOAuth2Controller {
     @Resource
     private AuthorizationServerTokenServices authorizationServerTokenServices;
 
+
     /**
      * 用户名密码登录
      * @param username
@@ -55,7 +59,7 @@ public class MbootOAuth2Controller {
      * @param response
      * @return
      */
-    @PostMapping(value = SecurityConstants.PASSWORD_LOGIN_PRO_URL)
+    @PostMapping(value = "/user/token")
     public R  loginByUsername(@RequestParam("username") String username,
                               @RequestParam("password") String password,
                               HttpServletRequest  request,
@@ -65,6 +69,10 @@ public class MbootOAuth2Controller {
         return R.ok("登录成功",accessToken);
     }
 
+    @GetMapping(value = "/oauth/name")
+    public R name(){
+        return R.ok();
+    }
 
     /**
      * 处理access_token
@@ -97,9 +105,6 @@ public class MbootOAuth2Controller {
             return oAuth2AccessToken;
     }
 
-    public static void main(String[] args) {
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("mboot"));
-    }
+
 
 }

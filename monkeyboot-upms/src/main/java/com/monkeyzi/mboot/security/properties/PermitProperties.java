@@ -18,6 +18,7 @@ public class PermitProperties {
      */
     private static final String[] ENDPOINTS = {
             "/oauth/**",
+            "/mobile/**",
             "/actuator/**",
             "/*/v2/api-docs",
             "/swagger/api-docs",

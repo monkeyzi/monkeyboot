@@ -2,11 +2,13 @@ package com.monkeyzi.mboot.security.mobile;
 
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,8 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * 手机号密码登录 authentication
  */
 @Setter
+@Slf4j
 public class MobileAuthenticationProvider implements AuthenticationProvider {
-
+    private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
     private MbootUserDetailService mbootUserDetailService;
     private PasswordEncoder passwordEncoder;
 
@@ -26,7 +29,11 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
         String password= (String) mobileAuthenticationToken.getCredentials();
         UserDetails details=mbootUserDetailService.loadUserByMobilePhone(mobile);
         if (details==null){
-            throw new InternalAuthenticationServiceException("手机号或密码错误");
+            System.out.println("消息="+messages.getMessage(
+                    "AbstractUserDetailsAuthenticationProvider.noopBindAccount"));
+                throw new BadCredentialsException(messages.getMessage(
+                        "AbstractUserDetailsAuthenticationProvider.noopBindAccount",
+                        "NoopBindAccount"));
         }
         if (!passwordEncoder.matches(password, details.getPassword())) {
             throw new BadCredentialsException("手机号或密码错误");
