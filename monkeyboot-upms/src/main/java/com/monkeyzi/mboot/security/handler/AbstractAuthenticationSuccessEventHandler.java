@@ -3,6 +3,7 @@
 package com.monkeyzi.mboot.security.handler;
 
 import cn.hutool.core.collection.CollUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 /**
  * 认证成功事件处理器
  */
+@Slf4j
 public abstract class AbstractAuthenticationSuccessEventHandler implements ApplicationListener<AuthenticationSuccessEvent> {
 	/**
 	 * Handle an application event.
@@ -19,9 +21,8 @@ public abstract class AbstractAuthenticationSuccessEventHandler implements Appli
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
 		Authentication authentication = (Authentication) event.getSource();
-		if (CollUtil.isNotEmpty(authentication.getAuthorities())) {
-			handle(authentication);
-		}
+		//处理用户登录成功后事件
+		handle(authentication);
 	}
 
 	/**

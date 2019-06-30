@@ -13,4 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface MbootUserDetailService extends UserDetailsService {
 
     UserDetails loadUserByMobilePhone(String mobile);
+
+    UserDetails loadUserBySocialId(String wxOpenId);
 }

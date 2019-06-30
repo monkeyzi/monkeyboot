@@ -29,9 +29,7 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
         String password= (String) mobileAuthenticationToken.getCredentials();
         UserDetails details=mbootUserDetailService.loadUserByMobilePhone(mobile);
         if (details==null){
-            System.out.println("消息="+messages.getMessage(
-                    "AbstractUserDetailsAuthenticationProvider.noopBindAccount"));
-                throw new BadCredentialsException(messages.getMessage(
+            throw new BadCredentialsException(messages.getMessage(
                         "AbstractUserDetailsAuthenticationProvider.noopBindAccount",
                         "NoopBindAccount"));
         }

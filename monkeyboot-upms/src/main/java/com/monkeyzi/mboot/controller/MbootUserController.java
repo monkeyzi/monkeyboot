@@ -10,6 +10,7 @@ import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
 import com.monkeyzi.mboot.service.MbootUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class MbootUserController {
      * @return
      */
     @GetMapping(value = "/page")
+    @PreAuthorize("@pms.hasPermission('user_page')")
     public R page(@Valid  UserPageReq req){
         log.info("分页查询用户列表的参数为 param={}",req);
         PageInfo pageInfo=mbootUserService.listPageUserByCondition(req);

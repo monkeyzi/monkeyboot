@@ -29,7 +29,7 @@ public class DefaultSecurityHandlerConfig {
     }
 
     /**
-     * 处理spring security oauth 处理失败返回消息格式
+     * 处理spring org.springframework.security oauth 处理失败返回消息格式
      */
     @Bean
     public OAuth2AccessDeniedHandler oAuth2AccessDeniedHandler() {

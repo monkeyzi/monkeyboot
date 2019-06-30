@@ -7,11 +7,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.social.security.SocialUserDetails;
-import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class MbootUserDetailServiceImpl implements MbootUserDetailService,SocialUserDetailsService {
+public class MbootUserDetailServiceImpl implements MbootUserDetailService{
 
     @Autowired
     private MbootUserService mbootUserService;
@@ -62,7 +59,7 @@ public class MbootUserDetailServiceImpl implements MbootUserDetailService,Social
      * @throws UsernameNotFoundException
      */
     @Override
-    public SocialUserDetails loadUserByUserId(String openId) throws UsernameNotFoundException {
+    public UserDetails loadUserBySocialId(String openId) throws UsernameNotFoundException {
         MbootLoginUser  loginUser=mbootUserService.getUserByWxOpenId(openId);
         return checkLoginUser(loginUser);
     }

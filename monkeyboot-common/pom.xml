@@ -16,6 +16,7 @@
         <module>monkeyboot-common-core</module>
         <module>monkeyboot-common-utils</module>
         <module>monkeyboot-common-db-starter</module>
+        <module>monkeyboot-common-security-starter</module>
     </modules>
 
 

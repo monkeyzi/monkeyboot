@@ -8,6 +8,7 @@ import com.monkeyzi.mboot.security.utils.AuthUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,7 +50,7 @@ public class MbootOAuth2Controller {
     private AuthenticationManager authenticationManager;
     @Resource
     private AuthorizationServerTokenServices authorizationServerTokenServices;
-
+    private static MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
     /**
      * 用户名密码登录
@@ -69,6 +70,7 @@ public class MbootOAuth2Controller {
         return R.ok("登录成功",accessToken);
     }
 
+    @PreAuthorize("@pms.hasPermission('oauth_name')")
     @GetMapping(value = "/oauth/name")
     public R name(){
         return R.ok();
@@ -105,6 +107,10 @@ public class MbootOAuth2Controller {
             return oAuth2AccessToken;
     }
 
+    public static void main(String[] args) {
+        System.out.println(messages.getMessage("AbstractUserDetailsAuthenticationProvider.noopBindAccount"));
+
+    }
 
 
 }

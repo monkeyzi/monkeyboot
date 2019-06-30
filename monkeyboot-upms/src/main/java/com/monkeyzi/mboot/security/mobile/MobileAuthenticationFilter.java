@@ -8,14 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
@@ -66,14 +63,11 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
         Authentication authResult=null;
         try {
             authResult = this.getAuthenticationManager().authenticate(mobileAuthenticationToken);
-            log.debug("Authentication success");
+            log.warn("Authentication success");
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }catch (Exception e){
-            logger.debug("Authentication request failed: " + e);
+            logger.warn("Authentication request failed: " + e);
             SecurityContextHolder.clearContext();
-            logger.debug("Authentication request failed: " + e);
-            eventPublisher.publishAuthenticationFailure(new BadCredentialsException(e.getMessage(), e),
-                    new PreAuthenticatedAuthenticationToken("access-token", "N/A"));
             try {
                 authenticationEntryPoint.commence(request, response,
                         new UsernameNotFoundException(e.getMessage(), e));

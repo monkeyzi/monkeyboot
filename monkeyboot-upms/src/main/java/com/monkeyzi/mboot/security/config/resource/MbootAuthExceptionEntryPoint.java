@@ -4,7 +4,6 @@ package com.monkeyzi.mboot.security.config.resource;
 
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.monkeyzi.mboot.common.core.result.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +35,8 @@ public class MbootAuthExceptionEntryPoint implements AuthenticationEntryPoint {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		Map<String,Object> result=new HashMap<>(4);
-		result.put("code",ResponseCode.ERROR.getCode());
-		result.put("success",false);
+		result.put("code",401);
+		result.put("success",Boolean.FALSE);
 		if (authException != null) {
 			result.put("msg",authException.getMessage());
 			result.put("data",null);

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.social.security.SocialUserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -20,17 +20,13 @@ import java.util.HashSet;
  */
 @Getter
 @Setter
-public class MbootLoginUser extends MbootUser  implements SocialUserDetails {
+public class MbootLoginUser extends MbootUser  implements UserDetails {
 
     /**
      * 权限标识集合
      */
     private String[] permissions;
 
-    @Override
-    public String getUserId() {
-        return getWxOpenId();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

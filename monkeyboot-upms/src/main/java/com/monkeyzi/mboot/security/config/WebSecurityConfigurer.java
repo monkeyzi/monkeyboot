@@ -1,26 +1,28 @@
 package com.monkeyzi.mboot.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
 import com.monkeyzi.mboot.config.MbootPasswordConfig;
 import com.monkeyzi.mboot.security.config.resource.MbootAuthExceptionEntryPoint;
 import com.monkeyzi.mboot.security.mobile.MobileAuthenticationSecurityConfig;
 import com.monkeyzi.mboot.security.mobile.MobileLoginSuccessHandler;
 import com.monkeyzi.mboot.security.properties.SecurityProperties;
+import com.monkeyzi.mboot.security.service.MbootClientDetailService;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
@@ -33,15 +35,21 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @Configuration
 @Primary
 @Order(90)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 @EnableConfigurationProperties(SecurityProperties.class)
 @Import(MbootPasswordConfig.class)
 public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MbootAuthExceptionEntryPoint authenticationEntryPoint;
     @Autowired
     private MbootUserDetailService userDetailsService;
+    @Autowired
+    private MbootClientDetailService mbootClientDetailService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,7 +57,9 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
-
+    @Lazy
+    @Autowired
+    private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
     /***
      * 认证管理对象
      * @return
@@ -74,7 +84,11 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
-        return MobileLoginSuccessHandler.builder().build();
+        return MobileLoginSuccessHandler.builder()
+                .clientDetailsService(mbootClientDetailService)
+                .defaultAuthorizationServerTokenServices(defaultAuthorizationServerTokenServices)
+                .objectMapper(objectMapper)
+                .passwordEncoder(passwordEncoder).build();
     }
 
     @Bean

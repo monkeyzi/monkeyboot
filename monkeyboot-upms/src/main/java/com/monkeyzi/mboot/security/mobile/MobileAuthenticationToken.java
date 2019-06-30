@@ -14,7 +14,7 @@ public class MobileAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
 
-    private Object credentials;
+    private final Object credentials;
 
     public MobileAuthenticationToken(String mobile, String password) {
         super(null);

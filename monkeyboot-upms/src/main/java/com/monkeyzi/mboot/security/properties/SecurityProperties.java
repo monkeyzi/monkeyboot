@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Setter
 @Getter
-@ConfigurationProperties(prefix = "mboot.security")
+@ConfigurationProperties(prefix = "mboot.org.springframework.security")
 public class SecurityProperties {
 
     private PermitProperties ignore = new PermitProperties();

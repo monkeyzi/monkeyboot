@@ -39,7 +39,6 @@ public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapte
     private AuthenticationSuccessHandler mobileLoginSuccessHandler;
     @Override
     public void configure(HttpSecurity http) {
-        log.info("filter-----------------");
         MobileAuthenticationFilter mobileAuthenticationFilter = new MobileAuthenticationFilter();
         mobileAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         mobileAuthenticationFilter.setAuthenticationSuccessHandler(mobileLoginSuccessHandler);
@@ -48,6 +47,7 @@ public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapte
 
         MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
         mobileAuthenticationProvider.setMbootUserDetailService(userDetailsService);
+        mobileAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         http.authenticationProvider(mobileAuthenticationProvider)
                 .addFilterAfter(mobileAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
