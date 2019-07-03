@@ -73,19 +73,19 @@ public interface MbootUserService extends ISuperService<MbootUser> {
      * @param username
      * @return
      */
-    MbootLoginUser getUserByUserName(String username);
+    MbootUser getUserByUserName(String username);
 
     /**
      * 根据手机号查询用户信息
      * @param mobile
      * @return
      */
-    MbootLoginUser getUserByMobilePhone(String mobile);
+    MbootUser getUserByMobilePhone(String mobile);
 
     /**
      * 根据微信openid查询用户的信息
      * @param wxOpenId
      * @return
      */
-    MbootLoginUser getUserByWxOpenId(String wxOpenId);
+    MbootUser getUserByWxOpenId(String wxOpenId);
 }

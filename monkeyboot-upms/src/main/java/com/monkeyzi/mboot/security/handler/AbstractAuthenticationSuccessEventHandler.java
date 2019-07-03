@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * 认证成功事件处理器
@@ -22,7 +23,9 @@ public abstract class AbstractAuthenticationSuccessEventHandler implements Appli
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
 		Authentication authentication = (Authentication) event.getSource();
 		//处理用户登录成功后事件
-		handle(authentication);
+		if (CollUtil.isNotEmpty(authentication.getAuthorities())) {
+			handle(authentication);
+		}
 	}
 
 	/**

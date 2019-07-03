@@ -49,4 +49,7 @@ public class MbootUser extends SuperEntity{
     @TableField(exist = false)
     private List<MbootRole> roleList;
 
+    @TableField(exist = false)
+    private String[] permissions;
+
 }

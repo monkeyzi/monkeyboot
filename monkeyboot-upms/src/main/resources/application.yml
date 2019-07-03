@@ -19,7 +19,7 @@ spring:
   #redis配置
   redis:
     host: 127.0.0.1
-    password: 1223gao
+    password:
     port: 6379
     jedis:
       pool:
@@ -27,7 +27,6 @@ spring:
         min-idle: 8
         max-idle: 50
         max-active: 8
-
 #mybatis plus配置
 mybatis-plus:
   # 放在resource目录 classpath:/mapper/*Mapper.xml

@@ -101,31 +101,29 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     }
 
     @Override
-    public MbootLoginUser getUserByUserName(String username) {
+    public MbootUser getUserByUserName(String username) {
         MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getUsername,username));
         return getLoginUser(mbootUser);
     }
 
     @Override
-    public MbootLoginUser getUserByMobilePhone(String mobile) {
+    public MbootUser getUserByMobilePhone(String mobile) {
         MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getPhone,mobile));
         return getLoginUser(mbootUser);
     }
 
     @Override
-    public MbootLoginUser getUserByWxOpenId(String wxOpenId) {
+    public MbootUser getUserByWxOpenId(String wxOpenId) {
         MbootUser mbootUser=this.getOne(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getWxOpenId,wxOpenId));
         return getLoginUser(mbootUser);
     }
 
 
-    private MbootLoginUser getLoginUser(MbootUser mbootUser){
+    private MbootUser getLoginUser(MbootUser mbootUser){
         if (mbootUser!=null){
-            MbootLoginUser loginUser=new MbootLoginUser();
-            BeanUtils.copyProperties(mbootUser,loginUser);
             List<MbootRole> roleList=mbootRoleService.getRoleListByUserId(mbootUser.getId());
             //设置角色列表
-            loginUser.setRoleList(roleList);
+            mbootUser.setRoleList(roleList);
             //设置权限列表（permission.permission）
             Set<String> permissions = new HashSet<>();
             roleList.forEach(role -> {
@@ -136,8 +134,8 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
                         .collect(Collectors.toList());
                 permissions.addAll(permissionList);
             });
-            loginUser.setPermissions(ArrayUtil.toArray(permissions, String.class));
-            return loginUser;
+            mbootUser.setPermissions(ArrayUtil.toArray(permissions, String.class));
+            return mbootUser;
         }
         return null;
     }

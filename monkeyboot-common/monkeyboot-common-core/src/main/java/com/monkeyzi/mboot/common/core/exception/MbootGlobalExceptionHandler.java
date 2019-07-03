@@ -4,6 +4,7 @@ import com.monkeyzi.mboot.common.core.result.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -123,7 +124,19 @@ public class MbootGlobalExceptionHandler {
         log.error("400坏的请求={}",e);
         return R.error(400, "坏的请求");
     }
+    /**
+     * AccessDeniedException
+     *
+     * @param e the e
+     * @return R
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public R handleAccessDeniedException(AccessDeniedException e) {
+        log.error("拒绝授权异常信息 ex={}", "权限不足，不允许访问", e);
+        return R.error(403,"权限不足，不允许访问！");
 
+    }
 
     /**
      * 500异常
@@ -145,4 +158,6 @@ public class MbootGlobalExceptionHandler {
         log.error("全局异常信息 ex={}", e.getMessage(), e);
         return R.error(500,"哎呀，接口开小差了！");
     }
+
+
 }

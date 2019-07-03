@@ -7,6 +7,7 @@ import com.monkeyzi.mboot.protocal.req.RolePageReq;
 import com.monkeyzi.mboot.service.MbootRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class MbootRoleController {
     private MbootRoleService mbootRoleService;
 
     @GetMapping(value = "/page")
+    @PreAuthorize("@pms.hasPermission('role_page')")
     public R  page(@Valid RolePageReq req){
         log.info("分页查询角色列表的参数为 param={}",req);
         PageInfo pageInfo=mbootRoleService.listPageRoleByCondition(req);

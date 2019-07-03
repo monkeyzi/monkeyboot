@@ -32,6 +32,7 @@ public class MbootAuthExceptionEntryPoint implements AuthenticationEntryPoint {
 	@SneakyThrows
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 						 AuthenticationException authException) {
+		log.info("error={}",authException);
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		Map<String,Object> result=new HashMap<>(4);

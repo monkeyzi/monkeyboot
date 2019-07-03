@@ -34,8 +34,7 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
  **/
 @Configuration
 @Primary
-@Order(90)
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(2)
 @EnableWebSecurity
 @EnableConfigurationProperties(SecurityProperties.class)
 @Import(MbootPasswordConfig.class)
@@ -44,8 +43,6 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private MbootAuthExceptionEntryPoint authenticationEntryPoint;
     @Autowired
     private MbootUserDetailService userDetailsService;
     @Autowired
@@ -72,15 +69,6 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /**
-     * 全局用户对象
-     * @param auth
-     * @throws Exception
-     */
-    @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
 
     @Bean
     public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
@@ -102,34 +90,19 @@ public class WebSecurityConfigurer   extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(securityProperties.getIgnore().getUrls())
-                .permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
+        http.formLogin()
                 .loginPage(SecurityConstants.LOGIN_PAGE)
                 .loginProcessingUrl(SecurityConstants.OAUTH_LOGIN_PRO_URL)
                 .and()
-                .logout()
-                .logoutUrl(SecurityConstants.LOGOUT_URL)
-                .logoutSuccessUrl(SecurityConstants.LOGIN_PAGE)
-                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
-                //.addLogoutHandler(oauthLogoutHandler)
+                .authorizeRequests()
+                .antMatchers(securityProperties.getIgnore().getUrls())
+                .permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
                 .apply(mobileSecurityConfigurer())
                 .and()
                 // 解决不允许显示在iframe的问题
                 .headers().frameOptions().disable().cacheControl();
-
-        // 基于密码 等模式可以无session,不支持授权码模式
-        if (authenticationEntryPoint != null) {
-            http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        } else {
-            // 授权码模式单独处理，需要session的支持，此模式可以支持所有oauth2的认证
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-        }
     }
 }

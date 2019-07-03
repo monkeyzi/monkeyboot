@@ -1,37 +1,16 @@
 package com.monkeyzi.mboot.security.controller;
 
-import cn.hutool.core.map.MapUtil;
-import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
+import cn.hutool.core.util.StrUtil;
 import com.monkeyzi.mboot.common.core.result.R;
-import com.monkeyzi.mboot.security.service.MbootClientDetailService;
-import com.monkeyzi.mboot.security.utils.AuthUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Request;
-import org.springframework.security.oauth2.provider.TokenRequest;
-import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestValidator;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -39,78 +18,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @RestController
+@RequestMapping(value = "/oauth")
 public class MbootOAuth2Controller {
 
     @Autowired
-    private MbootClientDetailService mbootClientDetailService;
+    private TokenStore tokenStore;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Resource
-    private AuthorizationServerTokenServices authorizationServerTokenServices;
-    private static MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
-
-    /**
-     * 用户名密码登录
-     * @param username
-     * @param password
-     * @param request
-     * @param response
-     * @return
-     */
-    @PostMapping(value = "/user/token")
-    public R  loginByUsername(@RequestParam("username") String username,
-                              @RequestParam("password") String password,
-                              HttpServletRequest  request,
-                              HttpServletResponse response){
-        UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(username,password);
-        OAuth2AccessToken accessToken=handlerAccessToken(request,response,token);
-        return R.ok("登录成功",accessToken);
+    @RequestMapping(value = "/login")
+    @ResponseBody
+    public R login(HttpServletResponse response){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        response.setStatus(401);
+        return R.error(401,"请登录认证！");
     }
 
-    @PreAuthorize("@pms.hasPermission('oauth_name')")
-    @GetMapping(value = "/oauth/name")
-    public R name(){
-        return R.ok();
+
+    @DeleteMapping("/logout")
+    public R logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+        if (StrUtil.isBlank(authHeader)) {
+            return R.errorMsg("退出失败，token 为空");
+        }
+        String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+        if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
+            return R.errorMsg("退出失败，token 无效");
+        }
+        tokenStore.removeAccessToken(accessToken);
+        return R.okMsg("退出成功");
     }
-
-    /**
-     * 处理access_token
-     * @param request
-     * @param response
-     * @param token
-     * @return
-     */
-    private OAuth2AccessToken handlerAccessToken(HttpServletRequest request,HttpServletResponse response,
-                                                 AbstractAuthenticationToken token){
-            final String[] clients=AuthUtils.extractAndDecodeHeader(request);
-            String clientId=clients[0];
-            String clientSecret=clients[1];
-            ClientDetails clientDetails = mbootClientDetailService.loadClientByClientId(clientId);
-            if (clientDetails == null) {
-                throw new UnapprovedClientAuthenticationException("clientId对应的信息不存在");
-            } else if (!passwordEncoder.matches(clientSecret, clientDetails.getClientSecret())) {
-                throw new UnapprovedClientAuthenticationException("clientSecret不匹配");
-            }
-            TokenRequest tokenRequest = new TokenRequest(MapUtil.newHashMap(), clientId,
-                    clientDetails.getScope(), "customer");
-            //校验scope
-            new DefaultOAuth2RequestValidator().validateScope(tokenRequest, clientDetails);
-            OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
-            Authentication authentication = authenticationManager.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
-            OAuth2AccessToken oAuth2AccessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
-            oAuth2Authentication.setAuthenticated(true);
-            return oAuth2AccessToken;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(messages.getMessage("AbstractUserDetailsAuthenticationProvider.noopBindAccount"));
-
-    }
-
 
 }

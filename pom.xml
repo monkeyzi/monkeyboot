@@ -29,6 +29,7 @@
         <security.oauth.version>2.3.5.RELEASE</security.oauth.version>
         <security.oauth.auto.version>2.1.2.RELEASE</security.oauth.auto.version>
         <ttl.version>2.10.2</ttl.version>
+        <spring.security.version>2.1.2.RELEASE</spring.security.version>
     </properties>
 
     <dependencies>

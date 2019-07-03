@@ -4,12 +4,16 @@ import com.monkeyzi.mboot.entity.MbootUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author: 高yg
@@ -19,41 +23,35 @@ import java.util.HashSet;
  * @description:
  */
 @Getter
-@Setter
-public class MbootLoginUser extends MbootUser  implements UserDetails {
+public class MbootLoginUser extends User implements UserDetails{
+
+    private Integer id;
+    private Integer tenantId;
+    private Integer deptId;
 
     /**
-     * 权限标识集合
+     *
+     * @param id       用户Id
+     * @param deptId   部门Id
+     * @param tenantId 租户Id
+     * @param username 用户名
+     * @param password 密码
+     * @param enabled  true
+     * @param accountNonExpired true
+     * @param credentialsNonExpired true
+     * @param accountNonLocked  根据用户的状态设置
+     * @param authorities  权限
      */
-    private String[] permissions;
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new HashSet<>();
-        if (!CollectionUtils.isEmpty(super.getRoleList())) {
-            super.getRoleList().parallelStream().forEach(role -> collection.add(new SimpleGrantedAuthority(role.getRoleCode())));
-        }
-        return collection;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return getStatus()==0;
+    public MbootLoginUser(Integer id,Integer deptId,Integer tenantId,
+                          String username, String password,
+                          boolean enabled,
+                          boolean accountNonExpired,
+                          boolean credentialsNonExpired,
+                          boolean accountNonLocked,
+                          Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.id=id;
+        this.deptId=deptId;
+        this.tenantId=tenantId;
     }
 }
