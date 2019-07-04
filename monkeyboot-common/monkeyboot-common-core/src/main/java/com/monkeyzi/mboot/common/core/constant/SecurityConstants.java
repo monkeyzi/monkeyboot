@@ -190,5 +190,9 @@ public interface SecurityConstants {
      * 菜单根部
      */
     Integer MENU_ROOT=-1;
+    /**
+     * 部门树的根
+     */
+    Integer DEPT_ROOT=0;
 
 }

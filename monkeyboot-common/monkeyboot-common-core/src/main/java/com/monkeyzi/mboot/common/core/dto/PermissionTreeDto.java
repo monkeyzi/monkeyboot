@@ -14,6 +14,7 @@ public class PermissionTreeDto  extends TreeNode {
     private String  path;
     private String  component;
     private Integer type;
+    private boolean isCheck=false;
 
     public PermissionTreeDto() {
     }

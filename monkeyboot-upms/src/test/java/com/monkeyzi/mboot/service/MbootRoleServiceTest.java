@@ -22,12 +22,13 @@ public class MbootRoleServiceTest extends UpmsApplicationTests {
     @Test
     public void test2(){
         MbootRole role=new MbootRole();
-        role.setRoleName("测试");
-        role.setRoleCode("ROLE_ADMIN");
-        role.setRoleDataScope("全部");
-        role.setTenantId(111);
-        role.setDescription("藐视信息");
+        role.setRoleName("测试1");
+        role.setRoleCode("ROLE_ADMIN1111");
+        role.setRoleDataScope("全部111");
+        role.setTenantId(1111111);
+        role.setDescription("藐视信息111");
         role.setCreateBy("admin");
+        role.setId(5);
         mbootRoleService.save(role);
 
     }

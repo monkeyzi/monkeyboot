@@ -14,7 +14,17 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
-
+  #redis
+  redis:
+    host: 127.0.0.1
+    password: 1223gao
+    port: 6379
+    jedis:
+      pool:
+        max-wait: 5000ms
+        min-idle: 8
+        max-idle: 50
+        max-active: 8
 ## spring security 配置
 security:
   oauth2:
@@ -29,18 +39,6 @@ security:
         - /token/**
         - /mobile/**
 
-
-  #redis配置
-  redis:
-    host: 127.0.0.1
-    password:
-    port: 6379
-    jedis:
-      pool:
-        max-wait: 5000ms
-        min-idle: 8
-        max-idle: 50
-        max-active: 8
 #mybatis plus配置
 mybatis-plus:
   # 放在resource目录 classpath:/mapper/*Mapper.xml
