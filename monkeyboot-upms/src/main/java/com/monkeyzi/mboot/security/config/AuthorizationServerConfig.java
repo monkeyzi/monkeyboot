@@ -2,8 +2,9 @@ package com.monkeyzi.mboot.security.config;
 
 import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
 import com.monkeyzi.mboot.common.core.utils.TenantContextHolder;
-import com.monkeyzi.mboot.security.entity.MbootLoginUser;
-import com.monkeyzi.mboot.security.service.MbootClientDetailService;
+import com.monkeyzi.mboot.common.security.config.MbootWebResponseExceptionTranslator;
+import com.monkeyzi.mboot.common.security.entity.MbootLoginUser;
+import com.monkeyzi.mboot.common.security.service.MbootClientDetailService;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -19,7 +20,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;

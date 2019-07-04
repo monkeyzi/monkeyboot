@@ -4,13 +4,11 @@ import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.ISuperService;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.protocal.req.BasicInfoEditReq;
 import com.monkeyzi.mboot.protocal.req.UserEditReq;
 import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
 import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
-import com.monkeyzi.mboot.security.entity.MbootLoginUser;
-
-import java.util.List;
 
 /**
  * @author: 高yg
@@ -59,7 +57,7 @@ public interface MbootUserService extends ISuperService<MbootUser> {
      * @param req
      * @return
      */
-    boolean editUser(UserEditReq req);
+    R editUser(UserEditReq req);
 
     /**
      * 查询用户名存在不存在
@@ -88,4 +86,19 @@ public interface MbootUserService extends ISuperService<MbootUser> {
      * @return
      */
     MbootUser getUserByWxOpenId(String wxOpenId);
+
+    /**
+     * 登录用户修改自己信息
+     * @param req
+     * @return
+     */
+    R editUserInfo(BasicInfoEditReq req);
+
+    /**
+     * 修改登录用户密码
+     * @param password
+     * @param newPassword
+     * @return
+     */
+    R editUserPwd(String password, String newPassword);
 }

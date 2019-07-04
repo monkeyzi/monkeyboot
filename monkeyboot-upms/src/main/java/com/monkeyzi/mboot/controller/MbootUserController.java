@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.controller;
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.protocal.req.BasicInfoEditReq;
 import com.monkeyzi.mboot.protocal.req.UserEditReq;
 import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
@@ -11,10 +12,13 @@ import com.monkeyzi.mboot.service.MbootUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author: 高yg
@@ -100,21 +104,43 @@ public class MbootUserController {
     }
 
     /**
-     * 新增用户
+     * 更新用户
      * @param req
      * @return
      */
     @PutMapping(value = "/edit")
     public R editUser(@Valid @RequestBody UserEditReq req){
         log.info("修改用户的参数为 param={}",req);
-        boolean flag=mbootUserService.editUser(req);
-        if (flag) {
-            return R.okMsg("修改成功！");
-        }else {
-            return R.errorMsg("修改失败！");
-        }
+        R flag=mbootUserService.editUser(req);
+        return  flag;
     }
 
+    /**
+     * 用户自己修改基本信息
+     * @param req
+     * @return
+     */
+    @PutMapping(value = "/edit/info")
+    public R editUserInfo(@Valid @RequestBody BasicInfoEditReq req){
+        log.info("修改用户的参数为 param={}",req);
+        R flag=mbootUserService.editUserInfo(req);
+        return  flag;
+    }
+
+
+    /**
+     * 登录用户修改密码
+     * @param password
+     * @param newPassword
+     * @return
+     */
+    @PutMapping(value = "/edit/pwd")
+    public R editUserPwd(@NotBlank(message = "原密码不能为空") @RequestParam String password,
+                         @NotBlank(message = "新密码不能为空")@RequestParam String newPassword){
+        log.info("修改用户的参数为 param1={},param2={}",password,newPassword);
+        R flag=mbootUserService.editUserPwd(password,newPassword);
+        return  flag;
+    }
     /**
      * 查询用户名是否已存在
      * @param username

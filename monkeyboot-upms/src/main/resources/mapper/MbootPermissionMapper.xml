@@ -51,6 +51,19 @@
 		ORDER BY
 			p.sort DESC
     </select>
+	<!--查询用户的权限信息-->
+	<select id="selectPermissionByUserId" resultMap="BaseResultMap">
+		SELECT
+		      <include refid="Base_Column_List"/>
+		from
+		      mboot_permission p
+		LEFT JOIN mboot_role_permission rp ON p.id = rp.permission_id
+		LEFT JOIN mboot_user_role  ur ON rp.role_id = ur.role_id
+		WHERE p.is_del=0
+		AND ur.user_id=#{userId}
+		ORDER BY
+		p.sort DESC
+	</select>
 
 
 </mapper>

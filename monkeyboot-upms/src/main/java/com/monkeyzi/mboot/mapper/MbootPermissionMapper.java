@@ -20,4 +20,11 @@ public interface MbootPermissionMapper extends SuperMapper<MbootPermission> {
      * @return
      */
     List<MbootPermission> selectPermissionsByRoleId(Integer roleId);
+
+    /**
+     * 根据用户Id查询权限信息
+     * @param userId
+     * @return
+     */
+    List<MbootPermission> selectPermissionByUserId(Integer userId);
 }

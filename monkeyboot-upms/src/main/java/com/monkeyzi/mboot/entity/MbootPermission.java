@@ -11,7 +11,6 @@ import org.apache.ibatis.type.Alias;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
 @TableName(value = "mboot_permission")
 @Alias(value = "mbootPermission")
 public class MbootPermission  extends SuperEntity {

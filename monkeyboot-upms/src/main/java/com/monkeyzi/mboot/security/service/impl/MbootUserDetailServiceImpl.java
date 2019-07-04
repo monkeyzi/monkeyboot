@@ -1,17 +1,13 @@
 package com.monkeyzi.mboot.security.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.system.UserInfo;
+import com.monkeyzi.mboot.common.security.entity.MbootLoginUser;
 import com.monkeyzi.mboot.entity.MbootUser;
-import com.monkeyzi.mboot.security.entity.MbootLoginUser;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import com.monkeyzi.mboot.service.MbootUserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

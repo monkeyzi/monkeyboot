@@ -1,7 +1,7 @@
 package com.monkeyzi.mboot.security.mobile;
 
 import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
-import com.monkeyzi.mboot.security.config.resource.MbootAuthExceptionEntryPoint;
+import com.monkeyzi.mboot.common.security.config.MbootAuthExceptionEntryPoint;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

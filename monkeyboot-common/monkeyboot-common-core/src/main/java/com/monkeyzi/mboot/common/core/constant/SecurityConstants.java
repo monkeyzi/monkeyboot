@@ -114,7 +114,7 @@ public interface SecurityConstants {
     /**
      * OAUTH模式登录处理地址
      */
-    String OAUTH_LOGIN_PRO_URL = "/oauth/form";
+    String OAUTH_LOGIN_PRO_URL = "/token/form";
     /**
      * OAUTH URL
      */
@@ -144,7 +144,7 @@ public interface SecurityConstants {
     /**
      * 登录页面
      */
-    String LOGIN_PAGE = "/oauth/login";
+    String LOGIN_PAGE = "/token/login";
 
 
     /**
@@ -176,5 +176,19 @@ public interface SecurityConstants {
      * 协议字段
      */
     String DETAILS_LICENSE = "license";
+
+    /**
+     * 资源服务器默认bean名称
+     */
+    String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
+
+    /**
+     * 菜单
+     */
+    Integer MENU = 0;
+    /**
+     * 菜单根部
+     */
+    Integer MENU_ROOT=-1;
 
 }

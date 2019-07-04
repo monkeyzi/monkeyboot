@@ -10,7 +10,6 @@ import org.apache.ibatis.type.Alias;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
 @TableName(value = "mboot_file")
 @Alias(value = "mbootFile")
 public class MbootFile extends SuperEntity {

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author: 高yg
@@ -19,6 +20,10 @@ public class UserInfoVo implements Serializable {
     private String  username;
     private String  nickName;
     private String  headImg;
+    private LocalDateTime lastLoginTime;
+    private String  lastLoginIp;
+    private String  browser;
+    private String  os;
     /**
      * 权限标识集合
      */

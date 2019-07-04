@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot;
 
+import com.monkeyzi.mboot.common.security.annotation.EnableMbootResourceServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -12,9 +13,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @description:
  */
 @SpringBootApplication
+@EnableMbootResourceServer
 public class MyUpmsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MyUpmsApplication.class);
+        SpringApplication.run(MyUpmsApplication.class,args);
     }
 }

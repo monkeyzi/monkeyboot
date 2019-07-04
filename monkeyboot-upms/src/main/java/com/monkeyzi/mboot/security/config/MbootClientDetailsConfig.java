@@ -1,6 +1,6 @@
 package com.monkeyzi.mboot.security.config;
 
-import com.monkeyzi.mboot.security.service.MbootClientDetailService;
+import com.monkeyzi.mboot.common.security.service.MbootClientDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

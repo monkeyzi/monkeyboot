@@ -12,16 +12,10 @@
     <artifactId>monkeyboot-upms</artifactId>
 
     <dependencies>
-        <!--core-->
+        <!--common-sceurity-->
         <dependency>
             <groupId>com.monkeyzi</groupId>
-            <artifactId>monkeyboot-common-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--redis-->
-        <dependency>
-            <groupId>com.monkeyzi</groupId>
-            <artifactId>monkeyboot-common-redis-starter</artifactId>
+            <artifactId>monkeyboot-common-security-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--undertow容器-->
@@ -34,12 +28,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!--web-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
         <!--fastjson-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -51,21 +49,10 @@
             <artifactId>monkeyboot-common-db-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--稳定版本，替代spring org.springframework.security bom内置-->
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
             <version>${security.oauth.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>${security.oauth.auto.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
     </dependencies>
 

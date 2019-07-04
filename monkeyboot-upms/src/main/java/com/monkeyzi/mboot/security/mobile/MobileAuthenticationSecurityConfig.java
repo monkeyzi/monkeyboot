@@ -1,7 +1,7 @@
 package com.monkeyzi.mboot.security.mobile;
 
-import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
-import com.monkeyzi.mboot.security.config.resource.MbootAuthExceptionEntryPoint;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monkeyzi.mboot.common.security.config.MbootAuthExceptionEntryPoint;
 import com.monkeyzi.mboot.security.service.MbootUserDetailService;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,11 +27,11 @@ import org.springframework.stereotype.Component;
 public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     @Autowired
     private MbootUserDetailService userDetailsService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private MbootAuthExceptionEntryPoint authenticationEntryPoint;
 
     @Autowired
     private AuthenticationEventPublisher defaultAuthenticationEventPublisher;
@@ -43,7 +42,7 @@ public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapte
         mobileAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         mobileAuthenticationFilter.setAuthenticationSuccessHandler(mobileLoginSuccessHandler);
         mobileAuthenticationFilter.setEventPublisher(defaultAuthenticationEventPublisher);
-        mobileAuthenticationFilter.setAuthenticationEntryPoint(authenticationEntryPoint);
+        mobileAuthenticationFilter.setAuthenticationEntryPoint(new MbootAuthExceptionEntryPoint(objectMapper));
 
         MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
         mobileAuthenticationProvider.setMbootUserDetailService(userDetailsService);

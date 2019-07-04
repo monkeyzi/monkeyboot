@@ -12,4 +12,10 @@ import com.monkeyzi.mboot.entity.MbootUserRole;
  * @description:
  */
 public interface MbootUserRoleMapper extends SuperMapper<MbootUserRole> {
+    /**
+     * 根据用户的Id删除用户角色信息表
+     * @param userId
+     * @return
+     */
+    boolean deleteUserRoleByUserId(Integer userId);
 }

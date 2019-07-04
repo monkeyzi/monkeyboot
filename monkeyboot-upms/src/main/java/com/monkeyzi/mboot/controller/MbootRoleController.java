@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -98,7 +99,7 @@ public class MbootRoleController {
     }
 
     @PutMapping(value = "/roleBindPermission")
-    public R roleBindPermission(@NotBlank(message = "角色Id不能为空") @RequestParam String roleId,
+    public R roleBindPermission(@NotNull(message = "角色Id不能为空") @RequestParam Integer roleId,
                                 @NotEmpty(message = "权限Id列表不能为空")@RequestParam List<Integer> permissions){
         log.info("给角色绑定菜单权限的参数为 roleId={},permissions={}",roleId,permissions);
         R result=mbootRoleService.roleBindPermission(roleId,permissions);

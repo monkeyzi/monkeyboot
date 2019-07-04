@@ -8,7 +8,6 @@ import org.apache.ibatis.type.Alias;
 
 @Data
 @Builder
-@EqualsAndHashCode
 @TableName(value = "mboot_role")
 @Alias(value = "mbootRole")
 @NoArgsConstructor

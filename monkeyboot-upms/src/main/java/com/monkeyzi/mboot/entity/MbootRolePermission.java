@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 @Builder
 @TableName(value = "mboot_role_permission")
 @Alias(value = "mbootRolePermission")

@@ -3,9 +3,11 @@ package com.monkeyzi.mboot.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.monkeyzi.mboot.common.core.model.SuperEntity;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
+import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,13 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = false)
 @TableName(value = "mboot_user")
 @Alias(value = "mbootUser")
 public class MbootUser extends SuperEntity{
 
     private String  username;
+    @JsonIgnore
     private String  password;
+
     private String  nickname;
     private String  headImg;
     private Integer sex;

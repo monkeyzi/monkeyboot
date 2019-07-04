@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
 @TableName(value = "mboot_error_log")
 @Alias(value = "mbootErrorLog")
 public class MbootErrorLog extends BaseEntity {

@@ -1,21 +1,26 @@
 package com.monkeyzi.mboot.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.exception.BusinessException;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.impl.SuperServiceImpl;
+import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootPermission;
 import com.monkeyzi.mboot.entity.MbootRole;
 import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.entity.MbootUserRole;
 import com.monkeyzi.mboot.enums.DelStatusEnum;
 import com.monkeyzi.mboot.mapper.MbootUserMapper;
+import com.monkeyzi.mboot.protocal.req.BasicInfoEditReq;
 import com.monkeyzi.mboot.protocal.req.UserEditReq;
 import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
 import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
-import com.monkeyzi.mboot.security.entity.MbootLoginUser;
 import com.monkeyzi.mboot.service.MbootPermissionService;
 import com.monkeyzi.mboot.service.MbootRoleService;
 import com.monkeyzi.mboot.service.MbootUserRoleService;
@@ -23,8 +28,9 @@ import com.monkeyzi.mboot.service.MbootUserService;
 import com.monkeyzi.mboot.utils.util.PublicUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +56,10 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     private MbootRoleService mbootRoleService;
     @Autowired
     private MbootPermissionService mbootPermissionService;
+    @Autowired
+    private MbootUserRoleService mbootUserRoleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -65,7 +75,38 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
 
     @Override
     public UserInfoVo getCurrentLoginUserInfo() {
-        return null;
+        Integer userId=SecurityUtils.getLoginUser().getId();
+        MbootUser mbootUser=this.getById(userId);
+        if (mbootUser==null){
+            throw new BusinessException("获取用户信息失败，用户不存在！");
+        }
+        UserInfoVo vo=new UserInfoVo();
+        vo.setHeadImg(mbootUser.getHeadImg());
+        vo.setNickName(mbootUser.getNickname());
+        vo.setUserId(userId);
+        vo.setUsername(mbootUser.getUsername());
+        vo.setBrowser(mbootUser.getBrowser());
+        vo.setOs(mbootUser.getOs());
+        vo.setLastLoginIp(mbootUser.getLastLoginIp());
+        vo.setLastLoginTime(mbootUser.getLastLoginTime());
+        //角色信息
+        List<Integer> roleIds = mbootRoleService.getRoleListByUserId(userId)
+                .stream()
+                .map(MbootRole::getId)
+                .collect(Collectors.toList());
+        vo.setRoleIds(ArrayUtil.toArray(roleIds, Integer.class));
+       //设置权限标识列表
+        Set<String> permissions = new HashSet<>();
+        roleIds.forEach(roleId -> {
+            List<String> permissionList = mbootPermissionService.getPermissionsByRoleId(roleId)
+                    .stream()
+                    .filter(menuVo -> StringUtils.isNotEmpty(menuVo.getPermission()))
+                    .map(MbootPermission::getPermission)
+                    .collect(Collectors.toList());
+            permissions.addAll(permissionList);
+        });
+        vo.setPermissions(ArrayUtil.toArray(permissions, String.class));
+        return vo;
     }
 
     @Override
@@ -76,22 +117,59 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteUserById(Integer id) {
-        boolean flag=false;
         //删除用户关联的角色信息
+        mbootUserRoleService.deleteUserRoleByUserId(id);
         //逻辑删除用户表中数据
-        return flag;
+        this.removeById(id);
+        return Boolean.TRUE;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveUser(UserSaveReq req) {
-        return false;
+        MbootUser mbootUser=new MbootUser();
+        ModelMapper modelMapper=new ModelMapper();
+        modelMapper.map(req,mbootUser);
+        mbootUser.setIsDel(DelStatusEnum.IS_NOT_DEL.getType());
+        mbootUser.setPassword(passwordEncoder.encode(mbootUser.getPassword()));
+        this.save(mbootUser);
+        //添加用户角色关系
+        List<MbootUserRole> userRoleList = req.getRole()
+                .stream().map(roleId -> {
+                    MbootUserRole userRole = new MbootUserRole();
+                    userRole.setUserId(mbootUser.getId());
+                    userRole.setRoleId(roleId);
+                    return userRole;
+                }).collect(Collectors.toList());
+        return mbootUserRoleService.saveBatch(userRoleList);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean editUser(UserEditReq req) {
-        return false;
+    public R editUser(UserEditReq req) {
+        MbootUser user=this.getById(req.getId());
+        if (user==null){
+            return R.errorMsg("修改失败,用户不存在！");
+        }
+        if (StringUtils.isNotBlank(req.getPassword())){
+            req.setPassword(passwordEncoder.encode(req.getPassword()));
+        }
+        ModelMapper modelMapper=new ModelMapper();
+        modelMapper.map(req,user);
+        user.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
+        this.updateById(user);
+        //修改用户角色关系-删除原来关系
+        mbootUserRoleService.remove(Wrappers.<MbootUserRole>update().lambda()
+                .eq(MbootUserRole::getUserId, req.getId()));
+        //修改用户角色关系-新增新的关系
+        req.getRole().forEach(roleId -> {
+            MbootUserRole userRole = new MbootUserRole();
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(roleId);
+            userRole.setCreateBy(SecurityUtils.getLoginUser().getUsername());
+            userRole.insert();
+        });
+        return R.okMsg("修改成功！");
     }
 
     @Override
@@ -118,13 +196,40 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         return getLoginUser(mbootUser);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public R editUserInfo(BasicInfoEditReq req) {
+        Integer userId=SecurityUtils.getLoginUser().getId();
+        MbootUser user=this.getById(userId);
+        if (user==null){
+            return R.errorMsg("修改失败,用户不存在！");
+        }
+        this.updateById(user);
+        return R.errorMsg("修改成功！");
+    }
+
+    @Override
+    public R editUserPwd(String password, String newPassword) {
+        Integer userId=SecurityUtils.getLoginUser().getId();
+        MbootUser user=this.getById(userId);
+        if (user==null){
+            throw new BusinessException("修改失败,用户不存在！");
+        }
+        if (!passwordEncoder.matches(password,user.getPassword())){
+            log.error("密码修改失败,原密码不正确！");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        this.updateById(user);
+        return R.okMsg("密码修改成功！");
+    }
+
 
     private MbootUser getLoginUser(MbootUser mbootUser){
         if (mbootUser!=null){
             List<MbootRole> roleList=mbootRoleService.getRoleListByUserId(mbootUser.getId());
             //设置角色列表
             mbootUser.setRoleList(roleList);
-            //设置权限列表（permission.permission）
+            //设置权限列表
             Set<String> permissions = new HashSet<>();
             roleList.forEach(role -> {
                 List<String> permissionList = mbootPermissionService.getPermissionsByRoleId(role.getId())

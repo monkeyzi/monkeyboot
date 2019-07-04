@@ -12,5 +12,10 @@ import com.monkeyzi.mboot.entity.MbootUserRole;
  * @description:
  */
 public interface MbootUserRoleService extends ISuperService<MbootUserRole> {
-
+    /**
+     * 根据用户id删除用户角色表数据
+     * @param userId
+     * @return
+     */
+    boolean deleteUserRoleByUserId(Integer userId);
 }

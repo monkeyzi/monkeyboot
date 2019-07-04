@@ -1,28 +1,27 @@
 package com.monkeyzi.mboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.exception.BusinessException;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.impl.SuperServiceImpl;
 import com.monkeyzi.mboot.entity.MbootRole;
-import com.monkeyzi.mboot.entity.MbootUser;
+import com.monkeyzi.mboot.entity.MbootRolePermission;
 import com.monkeyzi.mboot.enums.DelStatusEnum;
 import com.monkeyzi.mboot.mapper.MbootRoleMapper;
-import com.monkeyzi.mboot.mapper.MbootRolePermissionMapper;
-import com.monkeyzi.mboot.mapper.MbootUserMapper;
 import com.monkeyzi.mboot.protocal.req.RolePageReq;
 import com.monkeyzi.mboot.service.MbootRolePermissionService;
 import com.monkeyzi.mboot.service.MbootRoleService;
-import com.monkeyzi.mboot.service.MbootUserService;
 import com.monkeyzi.mboot.utils.util.PublicUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: 高yg
@@ -66,8 +65,27 @@ public class MbootRoleServiceImpl extends SuperServiceImpl<MbootRoleMapper,Mboot
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R roleBindPermission(String roleId, List<Integer> permissions) {
-        return null;
+    public R roleBindPermission(Integer roleId, List<Integer> permissions) {
+        MbootRole role=this.getById(roleId);
+        if (role==null){
+            throw new BusinessException("角色绑定权限失败，角色不存在！");
+        }
+        if (PublicUtil.isEmpty(permissions)){
+            return R.okMsg("操作成功！");
+        }
+        //删除原有得关系
+        mbootRolePermissionService.remove(Wrappers.<MbootRolePermission>query().lambda()
+                .eq(MbootRolePermission::getRoleId, roleId));
+        //保存新的关系
+        List<MbootRolePermission> roleMenuList = permissions.stream()
+                .map(menuId -> {
+                    MbootRolePermission rolePermission = new MbootRolePermission();
+                    rolePermission.setRoleId(roleId);
+                    rolePermission.setPermissionId(menuId);
+                    return rolePermission;
+                }).collect(Collectors.toList());
+        this.mbootRolePermissionService.saveBatch(roleMenuList);
+        return R.okMsg("操作成功！");
     }
 
     @Override

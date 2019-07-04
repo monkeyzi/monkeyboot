@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.service;
 
+import com.monkeyzi.mboot.common.core.dto.PermissionTreeDto;
 import com.monkeyzi.mboot.common.core.service.ISuperService;
 import com.monkeyzi.mboot.entity.MbootPermission;
 import com.monkeyzi.mboot.entity.MbootRole;
@@ -21,4 +22,10 @@ public interface MbootPermissionService extends ISuperService<MbootPermission> {
      * @return
      */
     List<MbootPermission> getPermissionsByRoleId(Integer roleId);
+
+    /**
+     * 查询当前用户的权限树
+     * @return
+     */
+    List<PermissionTreeDto> getUserOwnPermissions();
 }

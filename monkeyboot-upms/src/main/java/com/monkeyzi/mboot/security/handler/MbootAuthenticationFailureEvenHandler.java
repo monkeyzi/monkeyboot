@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.security.handler;
 
+import com.monkeyzi.mboot.common.security.handler.AbstractAuthenticationFailureEvenHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

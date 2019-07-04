@@ -44,7 +44,7 @@ public interface MbootRoleService extends ISuperService<MbootRole> {
      * @param permissions
      * @return
      */
-    R roleBindPermission(String roleId, List<Integer> permissions);
+    R roleBindPermission(Integer roleId, List<Integer> permissions);
 
     /**
      * 删除角色
