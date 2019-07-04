@@ -102,7 +102,7 @@ public class MbootPermissionController {
      * @param id
      * @return
      */
-    @PostMapping(value = "/del/{id}")
+    @DeleteMapping(value = "/del/{id}")
     public R removePermissionById(@PathVariable Integer id){
         log.info("删除菜单权限的参数为 param={}",id);
         R r=mbootPermissionService.removePermissionById(id);

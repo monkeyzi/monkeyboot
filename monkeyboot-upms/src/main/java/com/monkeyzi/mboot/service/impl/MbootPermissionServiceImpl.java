@@ -127,6 +127,7 @@ public class MbootPermissionServiceImpl extends SuperServiceImpl<MbootPermission
         MbootPermission permission=new MbootPermission();
         ModelMapper modelMapper=new ModelMapper();
         modelMapper.map(req,permission);
+        permission.setCreateBy(SecurityUtils.getLoginUser().getUsername());
         this.save(permission);
         return R.okMsg("新增成功！");
     }
@@ -136,6 +137,7 @@ public class MbootPermissionServiceImpl extends SuperServiceImpl<MbootPermission
         MbootPermission permission=new MbootPermission();
         ModelMapper modelMapper=new ModelMapper();
         modelMapper.map(req,permission);
+        permission.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
         this.updateById(permission);
         return R.okMsg("修改成功！");
     }

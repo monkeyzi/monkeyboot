@@ -2,6 +2,7 @@ package com.monkeyzi.mboot.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.result.R;
+import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootRole;
 import com.monkeyzi.mboot.protocal.req.RolePageReq;
 import com.monkeyzi.mboot.service.MbootRoleService;
@@ -50,6 +51,7 @@ public class MbootRoleController {
     @PostMapping(value = "/save")
     public R  saveRole(@Valid @RequestBody MbootRole role){
         log.info("新增角色的参数为 param={}",role);
+        role.setCreateBy(SecurityUtils.getLoginUser().getUsername());
         boolean flag=mbootRoleService.save(role);
         if (flag){
             return R.errorMsg("新增成功！");
@@ -58,9 +60,10 @@ public class MbootRoleController {
         }
     }
 
-    @PostMapping(value = "/edit")
+    @PutMapping(value = "/edit")
     public R  editRole(@Valid @RequestBody MbootRole role){
         log.info("修改角色的参数为 param={}",role);
+        role.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
         boolean flag=mbootRoleService.updateById(role);
         if (flag){
             return R.errorMsg("修改成功！");

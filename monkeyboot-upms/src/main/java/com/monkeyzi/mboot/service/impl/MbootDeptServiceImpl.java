@@ -6,6 +6,7 @@ import com.monkeyzi.mboot.common.core.dto.DeptTreeDto;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.impl.SuperServiceImpl;
 import com.monkeyzi.mboot.common.core.utils.TreeUtil;
+import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootDept;
 import com.monkeyzi.mboot.entity.MbootRole;
 import com.monkeyzi.mboot.enums.DelStatusEnum;
@@ -48,6 +49,7 @@ public class MbootDeptServiceImpl extends SuperServiceImpl<MbootDeptMapper,Mboot
         ModelMapper modelMapper=new ModelMapper();
         MbootDept dept=new MbootDept();
         modelMapper.map(req,dept);
+        dept.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
         this.save(dept);
         return R.okMsg("部门新增成功！");
     }
@@ -62,6 +64,7 @@ public class MbootDeptServiceImpl extends SuperServiceImpl<MbootDeptMapper,Mboot
         ModelMapper modelMapper=new ModelMapper();
         MbootDept mbootDept=new MbootDept();
         modelMapper.map(req,mbootDept);
+        mbootDept.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
         this.updateById(mbootDept);
         return R.okMsg("部门修改成功！");
     }

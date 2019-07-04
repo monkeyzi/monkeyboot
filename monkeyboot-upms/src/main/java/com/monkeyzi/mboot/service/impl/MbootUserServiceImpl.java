@@ -132,6 +132,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         modelMapper.map(req,mbootUser);
         mbootUser.setIsDel(DelStatusEnum.IS_NOT_DEL.getType());
         mbootUser.setPassword(passwordEncoder.encode(mbootUser.getPassword()));
+        mbootUser.setCreateBy(SecurityUtils.getLoginUser().getUsername());
         this.save(mbootUser);
         //添加用户角色关系
         List<MbootUserRole> userRoleList = req.getRole()
@@ -204,6 +205,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         if (user==null){
             return R.errorMsg("修改失败,用户不存在！");
         }
+        user.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
         this.updateById(user);
         return R.errorMsg("修改成功！");
     }
@@ -219,6 +221,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
             log.error("密码修改失败,原密码不正确！");
         }
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setCreateBy(SecurityUtils.getLoginUser().getUsername());
         this.updateById(user);
         return R.okMsg("密码修改成功！");
     }
