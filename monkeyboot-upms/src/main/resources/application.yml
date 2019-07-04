@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8081
 spring:
   application:
     name: monkeyboot-upms
@@ -33,7 +33,7 @@ security:
   #redis配置
   redis:
     host: 127.0.0.1
-    password: 1223gao
+    password:
     port: 6379
     jedis:
       pool:
@@ -68,7 +68,3 @@ mybatis-plus:
   #别名
   type-aliases-package: com.monkeyzi.mboot.entity
 
-security:
-  oauth2:
-    resource:
-      token-info-uri: http://localhost:8083/oauth/check_token
