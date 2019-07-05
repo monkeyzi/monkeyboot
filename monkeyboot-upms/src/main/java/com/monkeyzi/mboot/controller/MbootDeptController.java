@@ -10,9 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -24,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@Validated
 @RequestMapping(value = "/dept")
 @Api(description = "部门管理",value = "dept")
 public class MbootDeptController {
@@ -48,7 +51,7 @@ public class MbootDeptController {
      */
     @ApiOperation(value = "查询部门详情",httpMethod ="GET")
     @GetMapping(value = "/info/{id}")
-    public R deptInfo(@PathVariable Integer id){
+    public R deptInfo(@NotNull(message = "id不能为空") @PathVariable Integer id){
         log.info("查询部门详情的参数为 param={}",id);
         MbootDept dept= mbootDeptService.getById(id);
         return R.ok("ok",dept);
