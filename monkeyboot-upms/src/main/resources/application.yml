@@ -17,7 +17,7 @@ spring:
   #redis
   redis:
     host: 127.0.0.1
-    password: 1223gao
+    password:
     port: 6379
     jedis:
       pool:
@@ -38,6 +38,10 @@ security:
         - /v2/api-docs
         - /token/**
         - /mobile/**
+        - /swagger/api-docs
+        - /swagger-ui.html
+        - /swagger-resources/**
+        - /webjars/**
 
 #mybatis plus配置
 mybatis-plus:
@@ -66,3 +70,24 @@ mybatis-plus:
   #别名
   type-aliases-package: com.monkeyzi.mboot.entity
 
+# swagger配置
+swagger:
+  title: Mboot Swagger API
+  description: Mboot在线API文档
+  version: 0.0.1-SNAPSHOT
+  license: Powered By monkeyzi
+  licenseUrl: http://www.monkeyzi.xin
+  terms-of-service-url: http://www.monkeyzi.xin
+  contact:
+    name: monkeyzi
+    email: 854152531@qq.com
+    url: http://www.monkeyzi.xin
+  authorization:
+    name: Mboot OAuth
+    auth-regex: ^.*$
+    authorization-scope-list:
+      - scope: server
+        description: server all
+    token-url-list:
+      - http://127.0.0.1:8081/oauth/token
+  base-package: com.monkeyzi.mboot.controller

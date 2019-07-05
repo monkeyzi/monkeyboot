@@ -6,6 +6,8 @@ import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootRole;
 import com.monkeyzi.mboot.protocal.req.RolePageReq;
 import com.monkeyzi.mboot.service.MbootRoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,11 +29,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping(value = "/role")
+@Api(description = "角色管理",value = "role")
 public class MbootRoleController {
 
     @Autowired
     private MbootRoleService mbootRoleService;
 
+    @ApiOperation(value = "分页查询角色")
     @GetMapping(value = "/page")
     @PreAuthorize("@pms.hasPermission('role_page')")
     public R  page(@Valid RolePageReq req){
@@ -40,6 +44,7 @@ public class MbootRoleController {
         return R.ok("ok",pageInfo);
     }
 
+    @ApiOperation(value = "查询角色详情")
     @GetMapping(value = "/detail/{id}")
     public R  roleDetailInfo(@PathVariable Integer id){
         log.info("根据Id查询角色信息的参数为 param={}",id);
@@ -48,6 +53,7 @@ public class MbootRoleController {
     }
 
 
+    @ApiOperation(value = "保存角色")
     @PostMapping(value = "/save")
     public R  saveRole(@Valid @RequestBody MbootRole role){
         log.info("新增角色的参数为 param={}",role);
@@ -60,6 +66,7 @@ public class MbootRoleController {
         }
     }
 
+    @ApiOperation(value = "修改角色")
     @PutMapping(value = "/edit")
     public R  editRole(@Valid @RequestBody MbootRole role){
         log.info("修改角色的参数为 param={}",role);
@@ -72,12 +79,14 @@ public class MbootRoleController {
         }
     }
 
+    @ApiOperation(value = "查询系统所有的角色列表")
     @GetMapping(value = "/list")
     public R  list(){
         List<MbootRole>  lists=mbootRoleService.listAllRoles();
         return R.ok("ok",lists);
     }
 
+    @ApiOperation(value = "删除角色")
     @DeleteMapping(value = "/delRole/{id}")
     public R  delRoleById(@PathVariable Integer id){
         log.info("删除角色的参数为 param={}",id);
@@ -89,6 +98,7 @@ public class MbootRoleController {
         }
     }
 
+    @ApiOperation(value = "校验角色code是否存在")
     @GetMapping(value = "/check/{roleCode}")
     public R  checkRoleCode(@PathVariable String roleCode){
         log.info("校验角色表示唯一性参数为 param={}",roleCode);
@@ -101,6 +111,7 @@ public class MbootRoleController {
 
     }
 
+    @ApiOperation(value = "给角色绑定菜单权限")
     @PutMapping(value = "/roleBindPermission")
     public R roleBindPermission(@NotNull(message = "角色Id不能为空") @RequestParam Integer roleId,
                                 @NotEmpty(message = "权限Id列表不能为空")@RequestParam List<Integer> permissions){

@@ -17,6 +17,7 @@
         <module>monkeyboot-common-utils</module>
         <module>monkeyboot-common-db-starter</module>
         <module>monkeyboot-common-security-starter</module>
+        <module>monkeyboot-common-swagger-starter</module>
     </modules>
 
 

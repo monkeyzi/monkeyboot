@@ -18,6 +18,12 @@
             <artifactId>monkeyboot-common-security-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--swagger-->
+        <dependency>
+            <groupId>com.monkeyzi</groupId>
+            <artifactId>monkeyboot-common-swagger-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--undertow容器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

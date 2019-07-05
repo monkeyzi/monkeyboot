@@ -9,6 +9,8 @@ import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
 import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
 import com.monkeyzi.mboot.service.MbootUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +33,7 @@ import javax.validation.constraints.NotBlank;
 @Slf4j
 @RequestMapping(value = "/user")
 @Validated
+@Api(description = "用户管理",value = "user")
 public class MbootUserController {
 
     @Autowired
@@ -41,6 +44,7 @@ public class MbootUserController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "用户分页查询")
     @GetMapping(value = "/page")
     @PreAuthorize("@pms.hasPermission('user_page')")
     public R page(@Valid  UserPageReq req){
@@ -53,6 +57,7 @@ public class MbootUserController {
      * 获取当前登录用户的信息
      * @return
      */
+    @ApiOperation(value = "查询当前登录用户的基本信息")
     @GetMapping(value = "/info")
     public R info(){
         UserInfoVo  userInfo=mbootUserService.getCurrentLoginUserInfo();
@@ -64,6 +69,7 @@ public class MbootUserController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "查询用户的基本信息")
     @GetMapping(value = "/info/{id}")
     public R getUserInfoById(@PathVariable Integer id){
         log.info("根据用户的iD查询用户的基本信息的参数 param={}",id);
@@ -76,7 +82,8 @@ public class MbootUserController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
+    @ApiOperation(value = "删除用户")
+    @DeleteMapping(value = "/del/{id}")
     public R deleteUserById(@PathVariable Integer id){
         log.info("删除用户的参数 param={}",id);
         boolean flag=mbootUserService.deleteUserById(id);
@@ -92,6 +99,7 @@ public class MbootUserController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "新增用户")
     @PostMapping(value = "/save")
     public R saveUser(@Valid @RequestBody UserSaveReq req){
         log.info("新增用户的参数为 param={}",req);
@@ -109,6 +117,7 @@ public class MbootUserController {
      * @return
      */
     @PutMapping(value = "/edit")
+    @ApiOperation(value = "更新用户")
     public R editUser(@Valid @RequestBody UserEditReq req){
         log.info("修改用户的参数为 param={}",req);
         R flag=mbootUserService.editUser(req);
@@ -120,6 +129,7 @@ public class MbootUserController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "登录用户修改自己的基本信息")
     @PutMapping(value = "/edit/info")
     public R editUserInfo(@Valid @RequestBody BasicInfoEditReq req){
         log.info("修改用户的参数为 param={}",req);
@@ -134,6 +144,7 @@ public class MbootUserController {
      * @param newPassword
      * @return
      */
+    @ApiOperation(value = "登录用户修改密码")
     @PutMapping(value = "/edit/pwd")
     public R editUserPwd(@NotBlank(message = "原密码不能为空") @RequestParam String password,
                          @NotBlank(message = "新密码不能为空")@RequestParam String newPassword){
@@ -146,6 +157,7 @@ public class MbootUserController {
      * @param username
      * @return
      */
+    @ApiOperation(value = "校验用户名是否存在")
     @GetMapping(value = "/check/{username}")
     public R checkUserName(@PathVariable String username){
          log.info("判断用户名是否已存在的参数为 param={}",username);
