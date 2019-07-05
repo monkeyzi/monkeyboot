@@ -28,8 +28,8 @@ public class JacksonConfig {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> {
-            builder.locale(Locale.CHINA);
-            builder.timeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
+            builder.locale(Locale.ENGLISH);
+            builder.timeZone(TimeZone.getTimeZone("GMT+8"));
             builder.simpleDateFormat(DatePattern.NORM_DATETIME_PATTERN);
             builder.modules(new MbootJava8TimeModule());
         };

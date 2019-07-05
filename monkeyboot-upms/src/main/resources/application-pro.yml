@@ -14,7 +14,7 @@ spring:
       password: ENC(ly6ALRqFlY9vVwnabWCg+5j/J7PdUuHe)
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.cj.jdbc.Driver
-  # exception     
+  #exception
   mvc:
     throw-exception-if-no-handler-found: true
   resources:

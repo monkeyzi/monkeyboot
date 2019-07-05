@@ -17,6 +17,7 @@ public class MbootDateMetaObjectHandler  implements MetaObjectHandler {
      * 新增
      * @param metaObject
      */
+    @Override
     public void insertFill(MetaObject metaObject) {
         Object createTime = getFieldValByName(CREATE_TIME, metaObject);
         Object updateTime = getFieldValByName(UPDATE_TIME, metaObject);
@@ -35,6 +36,7 @@ public class MbootDateMetaObjectHandler  implements MetaObjectHandler {
      * 更新
      * @param metaObject
      */
+    @Override
     public void updateFill(MetaObject metaObject) {
         LocalDateTime dateTime=LocalDateTime.now();
         setFieldValByName(UPDATE_TIME, dateTime, metaObject);

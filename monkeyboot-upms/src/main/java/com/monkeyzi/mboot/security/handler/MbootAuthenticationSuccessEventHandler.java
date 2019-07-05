@@ -30,7 +30,6 @@ public class MbootAuthenticationSuccessEventHandler extends AbstractAuthenticati
 		String path=request.getRequestURI();
 		if (path.equals(SecurityConstants.OAUTH_TOKEN_URL)){
 			log.info("用户={}登录成功",authentication.getPrincipal());
-			log.info("path={}",path);
 			SpringContextHolder.publishEvent(new MbootLoginLogEvent(request));
 		}
 	}
