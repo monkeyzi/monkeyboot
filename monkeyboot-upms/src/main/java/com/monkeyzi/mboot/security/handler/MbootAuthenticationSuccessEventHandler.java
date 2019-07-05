@@ -1,11 +1,13 @@
 
 package com.monkeyzi.mboot.security.handler;
 
+import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
+import com.monkeyzi.mboot.common.core.holder.SpringContextHolder;
 import com.monkeyzi.mboot.common.security.handler.AbstractAuthenticationSuccessEventHandler;
+import com.monkeyzi.mboot.log.MbootLoginLogEvent;
 import com.monkeyzi.mboot.utils.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +26,12 @@ public class MbootAuthenticationSuccessEventHandler extends AbstractAuthenticati
 	 */
 	@Override
 	public void handle(Authentication authentication) {
-		log.info("用户：{} 登录成功", authentication.getPrincipal());
 		HttpServletRequest request=WebUtils.getRequest();
-		log.info("用户登录的地址为 path={}",request.getRequestURI());
+		String path=request.getRequestURI();
+		if (path.equals(SecurityConstants.OAUTH_TOKEN_URL)){
+			log.info("用户={}登录成功",authentication.getPrincipal());
+			log.info("path={}",path);
+			SpringContextHolder.publishEvent(new MbootLoginLogEvent(request));
+		}
 	}
 }
