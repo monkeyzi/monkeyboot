@@ -32,14 +32,14 @@ public class MbootErrorLog extends BaseEntity {
     @TableLogic
     private Integer isDel;
 
-    private String createBy;
-
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    private Integer createUserId;
-
     private Integer status;
+
+    private String requestUri;
+
+    private String method;
 
 
 }

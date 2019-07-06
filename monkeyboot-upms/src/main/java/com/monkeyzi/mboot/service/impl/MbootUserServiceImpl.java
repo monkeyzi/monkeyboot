@@ -21,10 +21,7 @@ import com.monkeyzi.mboot.protocal.req.UserEditReq;
 import com.monkeyzi.mboot.protocal.req.UserPageReq;
 import com.monkeyzi.mboot.protocal.req.UserSaveReq;
 import com.monkeyzi.mboot.protocal.resp.UserInfoVo;
-import com.monkeyzi.mboot.service.MbootPermissionService;
-import com.monkeyzi.mboot.service.MbootRoleService;
-import com.monkeyzi.mboot.service.MbootUserRoleService;
-import com.monkeyzi.mboot.service.MbootUserService;
+import com.monkeyzi.mboot.service.*;
 import com.monkeyzi.mboot.utils.util.PublicUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +57,8 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     private MbootUserRoleService mbootUserRoleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MbootFileService mbootFileService;
 
 
     @Override
@@ -205,8 +204,19 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         if (user==null){
             return R.errorMsg("修改失败,用户不存在！");
         }
-        user.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
-        this.updateById(user);
+        MbootUser mbootUser=new MbootUser();
+        //用户图像
+        if (req.getHeadImg()!=null){
+            String result=mbootFileService.uploadFile(req.getHeadImg());
+            if (result==null){
+                return R.ok("修改失败,文件上传失败了！");
+            }
+            mbootUser.setHeadImg(result);
+        }
+        mbootUser.setPhone(req.getPhone());
+        mbootUser.setEmail(req.getEmail());
+        mbootUser.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
+        this.updateById(mbootUser);
         return R.errorMsg("修改成功！");
     }
 

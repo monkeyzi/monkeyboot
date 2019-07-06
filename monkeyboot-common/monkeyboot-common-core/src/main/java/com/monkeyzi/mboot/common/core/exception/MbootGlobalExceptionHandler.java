@@ -1,7 +1,11 @@
 package com.monkeyzi.mboot.common.core.exception;
 
+import com.monkeyzi.mboot.common.core.holder.SpringContextHolder;
+import com.monkeyzi.mboot.common.core.log.MbootErrorLogDto;
+import com.monkeyzi.mboot.common.core.log.MbootErrorLogEvent;
 import com.monkeyzi.mboot.common.core.result.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,6 +16,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -24,6 +29,9 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class MbootGlobalExceptionHandler {
+
+    @Value("${spring.application.name}")
+    private String serviceName;
     /**
      * 请求方法不支持的异常
      * @param e
@@ -56,7 +64,7 @@ public class MbootGlobalExceptionHandler {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     public R httpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
-        log.error("415不支持的媒体类型={}",e);
+        log.warn("415不支持的媒体类型={}",e);
         return R.error(415, "不支持媒体类型");
     }
     /**
@@ -121,7 +129,7 @@ public class MbootGlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R MissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        log.error("400坏的请求={}",e);
+        log.warn("400坏的请求={}",e);
         return R.error(400, "坏的请求");
     }
     /**
@@ -133,11 +141,22 @@ public class MbootGlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public R handleAccessDeniedException(AccessDeniedException e) {
-        log.error("拒绝授权异常信息 ex={}", "权限不足，不允许访问", e);
+        log.warn("拒绝授权异常信息 ex={}", "权限不足，不允许访问", e);
         return R.error(403,"权限不足，不允许访问！");
 
     }
 
+    /**
+     * 业务异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public R businessException(BusinessException e) {
+        log.error("business exception");
+        return R.error(e.getCode(), e.getMessage());
+    }
     /**
      * 500异常
      * @param e
@@ -153,9 +172,14 @@ public class MbootGlobalExceptionHandler {
         String method=request.getMethod();
         // 获取异常类型
         String exceptionType=e.getClass().getSimpleName();
-
-        log.info("uri={},method={},exceptionType={}",uri,method,exceptionType);
-        log.error("全局异常信息 ex={}", e.getMessage(), e);
+        MbootErrorLogDto errorLogDto=MbootErrorLogDto.builder().e(e)
+                .request(request)
+                .serviceName(serviceName)
+                .requestUri(uri)
+                .method(method)
+                .build();
+        SpringContextHolder.publishEvent(new MbootErrorLogEvent(errorLogDto));
+        log.error("异常信息uri={},method={},exceptionType={}",uri,method,exceptionType);
         return R.error(500,"哎呀，接口开小差了！");
     }
 

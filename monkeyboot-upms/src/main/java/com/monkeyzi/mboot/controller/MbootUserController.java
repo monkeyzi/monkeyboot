@@ -1,6 +1,7 @@
 package com.monkeyzi.mboot.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.annotation.MbootSysLog;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.MbootUser;
 import com.monkeyzi.mboot.protocal.req.BasicInfoEditReq;
@@ -44,6 +45,7 @@ public class MbootUserController {
      * @param req
      * @return
      */
+    @MbootSysLog(value = "分页查询用户")
     @ApiOperation(value = "用户分页查询")
     @GetMapping(value = "/page")
     @PreAuthorize("@pms.hasPermission('user_page')")
@@ -57,6 +59,7 @@ public class MbootUserController {
      * 获取当前登录用户的信息
      * @return
      */
+    @MbootSysLog(value = "查询登陆用户的信息")
     @ApiOperation(value = "查询当前登录用户的基本信息")
     @GetMapping(value = "/info")
     public R info(){
@@ -131,7 +134,7 @@ public class MbootUserController {
      */
     @ApiOperation(value = "登录用户修改自己的基本信息")
     @PutMapping(value = "/edit/info")
-    public R editUserInfo(@Valid @RequestBody BasicInfoEditReq req){
+    public R editUserInfo(@Valid BasicInfoEditReq req){
         log.info("修改用户的参数为 param={}",req);
         R flag=mbootUserService.editUserInfo(req);
         return  flag;

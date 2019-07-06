@@ -33,6 +33,8 @@ public class MbootFile extends SuperEntity {
 
     private Integer tenantId;
 
+    private Integer createUserId;
+
 
 
 }

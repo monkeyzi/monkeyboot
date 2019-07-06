@@ -20,7 +20,7 @@ public class MbootLog  extends BaseEntity {
 
     private String  logName;
 
-    private Integer logType;
+    private String logType;
 
     private String  serviceName;
 

@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.service;
 import com.monkeyzi.mboot.common.core.service.ISuperService;
 import com.monkeyzi.mboot.entity.MbootDept;
 import com.monkeyzi.mboot.entity.MbootFile;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author: 高yg
@@ -12,4 +13,18 @@ import com.monkeyzi.mboot.entity.MbootFile;
  * @description:
  */
 public interface MbootFileService extends ISuperService<MbootFile> {
+    /**
+     * 用户上传-只返回图像地址，不进行数据库操作
+     * @param file
+     */
+    String  uploadFile(MultipartFile file);
+
+    /**
+     * 上传文件
+     * @param file
+     * @param folderId
+     * @return
+     */
+    String  uploadFileByFolder(MultipartFile file,Integer folderId);
+
 }

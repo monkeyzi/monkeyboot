@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.controller;
 
+import com.monkeyzi.mboot.annotation.MbootSysLog;
 import com.monkeyzi.mboot.common.core.dto.PermissionTreeDto;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.MbootPermission;
@@ -49,6 +50,7 @@ public class MbootPermissionController {
      * @param roleId
      * @return
      */
+    @MbootSysLog("查询权限树")
     @ApiOperation(value = "查询某个角色的权限树")
     @GetMapping(value = "/tree/{roleId}")
     public R getPermissionsTreeByRoleId(@PathVariable Integer roleId){

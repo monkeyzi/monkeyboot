@@ -25,5 +25,7 @@ public class MbootFileFolder extends SuperEntity {
 
     private Integer tenantId;
 
+    private Integer createUserId;
+
 
 }
