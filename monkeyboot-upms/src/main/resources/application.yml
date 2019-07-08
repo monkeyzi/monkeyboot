@@ -22,7 +22,8 @@ spring:
   #redis
   redis:
     host: 127.0.0.1
-    password: ENC(sAxR1yuo9TKgVO4rpYtgEw==)
+    #password: ENC(sAxR1yuo9TKgVO4rpYtgEw==)
+    password:
     port: 6379
     jedis:
       pool:

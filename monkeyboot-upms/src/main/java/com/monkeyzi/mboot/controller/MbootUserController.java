@@ -45,7 +45,6 @@ public class MbootUserController {
      * @param req
      * @return
      */
-    @MbootSysLog(value = "分页查询用户")
     @ApiOperation(value = "用户分页查询")
     @GetMapping(value = "/page")
     @PreAuthorize("@pms.hasPermission('user_page')")

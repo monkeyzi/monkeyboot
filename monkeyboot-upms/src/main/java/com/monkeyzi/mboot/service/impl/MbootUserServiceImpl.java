@@ -208,7 +208,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
         //用户图像
         if (req.getHeadImg()!=null){
             String result=mbootFileService.uploadFile(req.getHeadImg());
-            if (result==null){
+            if (StringUtils.isBlank(result)){
                 return R.ok("修改失败,文件上传失败了！");
             }
             mbootUser.setHeadImg(result);
