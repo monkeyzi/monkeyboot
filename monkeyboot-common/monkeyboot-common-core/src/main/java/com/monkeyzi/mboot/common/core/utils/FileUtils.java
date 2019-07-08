@@ -31,6 +31,15 @@ public class FileUtils {
     }
 
     /**
+     * 获取文件夹
+     * @param fileOriginName
+     * @return
+     */
+    public String  getFolderByOri(String fileOriginName){
+        return getFolder(getFileExtension(fileOriginName));
+    }
+
+    /**
      * 获取存储的文件夹
      * @param extName  文件后缀
      * @return

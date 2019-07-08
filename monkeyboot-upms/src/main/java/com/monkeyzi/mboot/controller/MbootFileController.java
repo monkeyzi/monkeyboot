@@ -1,23 +1,18 @@
 package com.monkeyzi.mboot.controller;
 
-import com.monkeyzi.mboot.common.core.constant.OssSettingConstants;
+import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.common.core.result.R;
-import com.monkeyzi.mboot.entity.MbootOssConfig;
+import com.monkeyzi.mboot.protocal.req.file.FilePageReq;
 import com.monkeyzi.mboot.service.MbootFileService;
-import com.monkeyzi.mboot.utils.util.PublicUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -37,6 +32,13 @@ public class MbootFileController {
     @Autowired
     private MbootFileService mbootFileService;
 
+    @ApiOperation(value = "文件列表分页查询")
+    @GetMapping(value = "/page")
+    public R page(@Valid FilePageReq req){
+        log.info("分页查询文件的参数为 param={}",req);
+        PageInfo pageInfo=mbootFileService.getFilePageByCondition(req);
+        return R.ok("ok",pageInfo);
+    }
 
 
     @ApiOperation(value = "文件上传")
@@ -48,5 +50,30 @@ public class MbootFileController {
         return R.ok("上传成功",result);
     }
 
+    @ApiOperation(value = "删除文件")
+    @DeleteMapping(value = "/delFile/{id}")
+    public R deleteFile(@PathVariable Integer id){
+         log.info("删除文件的参数为 fileId={}",id);
+         R  r=mbootFileService.deleteFile(id);
+         return r;
+    }
 
+
+    @ApiOperation(value = "复制文件")
+    @PutMapping(value = "/copyFile/{id}")
+    public R copyFile(@PathVariable Integer id){
+        log.info("复制文件的参数为 fileId={}",id);
+        R  r=mbootFileService.copyFile(id);
+        return r;
+    }
+
+
+    @ApiOperation(value = "重命名文件")
+    @PutMapping(value = "/reNameFile")
+    public R reNameFile(@NotNull(message = "文件Id不能为空")@RequestParam Integer id,
+                        @NotNull(message = "新文件名不能为空")@RequestParam String  newName){
+        log.info("重命名文件的参数为 fileId={},newName",id,newName);
+        R  r=mbootFileService.reNameFile(id,newName);
+        return r;
+    }
 }

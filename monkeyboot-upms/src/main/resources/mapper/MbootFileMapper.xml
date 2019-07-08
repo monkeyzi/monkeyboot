@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.mboot.mapper.MbootFileMapper">
+	<!--file表基础resultMap-->
+	<resultMap id="ResultMap" type="mbootFile">
+		<id property="id" column="id"/>
+		<result property="fileName" column="file_name"/>
+		<result property="fileSize" column="file_size"/>
+		<result property="fileType" column="file_type"/>
+		<result property="fileLocationName" column="file_location_name"/>
+		<result property="isDel" column="is_del"/>
+		<result property="fileOriginName" column="file_origin_name"/>
+		<result property="fileUrl" column="file_url"/>
+		<result property="folderId" column="folder_id"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="isDel" column="is_del"/>
+		<result property="fileLocation" column="file_location"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="tenantId" column="tenant_id"/>
+	</resultMap>
+    <!--用户表基础返回sql字段-->
+	<sql id="Base_Column_List">
+		f.id,
+		f.file_name,
+		f.file_size,
+		f.file_type,
+		f.file_location_name,
+		f.is_del,
+		f.file_origin_name,
+		f.file_url,
+		f.folder_id,
+		f.create_time,
+		f.update_time,
+		f.create_by,
+		f.update_by,
+		f.tenant_id,
+		f.create_user_id,
+		f.file_location
+	</sql>
+
+	<sql id="Base_Where_Condition" >
+		<if test="createBy != null and createBy != ''" >
+			AND ${alias}.create_by like concat("%",#{createBy,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="fileName != null and fileName != ''" >
+			AND ${alias}.file_origin_name = like concat("%",#{fileName,jdbcType=VARCHAR},"%")
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND ${alias}.create_time &gt;= str_to_date(#{startTime}, '%Y-%m-%d %H')
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND ${alias}.create_time &lt;= str_to_date(#{endTime}, '%Y-%m-%d %T')
+		</if>
+	</sql>
+
+    <!--条件查询-->
+    <select id="selectFileByPageAndCondition" parameterType="com.monkeyzi.mboot.protocal.req.file.FilePageReq" resultMap="ResultMap">
+		 SELECT
+		 <include refid="Base_Column_List"/>,fd.folder_name as fileFolderName
+		 FROM mboot_file AS f
+		 RIGHT JOIN mboot_file_folder AS fd ON fd.id = f.folder_id
+		 WHERE 1 = 1
+		 <include refid="Base_Where_Condition">
+			<property name="alias" value="f"></property>
+		 </include>
+		 AND f.is_del=0
+		 ORDER BY f.create_time desc
+	</select>
+
+
+</mapper>

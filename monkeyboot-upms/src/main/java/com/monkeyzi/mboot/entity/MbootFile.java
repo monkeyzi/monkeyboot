@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monkeyzi.mboot.common.core.model.SuperEntity;
@@ -22,6 +23,8 @@ public class MbootFile extends SuperEntity {
 
     private String  fileLocation;
 
+    private String  fileLocationName;
+
     @TableLogic
     private Integer isDel;
 
@@ -34,6 +37,13 @@ public class MbootFile extends SuperEntity {
     private Integer tenantId;
 
     private Integer createUserId;
+
+
+    @TableField(exist = false)
+    private String  fileFolderName;
+
+
+
 
 
 

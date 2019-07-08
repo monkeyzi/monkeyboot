@@ -1,8 +1,11 @@
 package com.monkeyzi.mboot.service;
 
+import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.ISuperService;
 import com.monkeyzi.mboot.entity.MbootDept;
 import com.monkeyzi.mboot.entity.MbootFile;
+import com.monkeyzi.mboot.protocal.req.file.FilePageReq;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -27,4 +30,32 @@ public interface MbootFileService extends ISuperService<MbootFile> {
      */
     String  uploadFileByFolder(MultipartFile file,Integer folderId);
 
+    /**
+     * 删除文件
+     * @param id
+     * @return
+     */
+    R deleteFile(Integer id);
+
+    /**
+     * 复制文件
+     * @param id
+     * @return
+     */
+    R copyFile(Integer id);
+
+    /**
+     * 重命名文件
+     * @param id
+     * @param newName
+     * @return
+     */
+    R reNameFile(Integer id, String newName);
+
+    /**
+     * 分页查询文件
+     * @param req
+     * @return
+     */
+    PageInfo getFilePageByCondition(FilePageReq req);
 }
