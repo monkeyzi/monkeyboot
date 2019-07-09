@@ -7,7 +7,7 @@ server:
   port: 8081
 spring:
   application:
-    name: monkeyboot-upms
+    name: @artifactId@
   datasource:
       url: jdbc:mysql://monkeyzi:3306/monkeyboot?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
       username: guoguo

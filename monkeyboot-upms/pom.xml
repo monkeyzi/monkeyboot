@@ -63,6 +63,7 @@
             <artifactId>spring-security-oauth2</artifactId>
             <version>${security.oauth.version}</version>
         </dependency>
+        <!--jasypt解密-->
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
