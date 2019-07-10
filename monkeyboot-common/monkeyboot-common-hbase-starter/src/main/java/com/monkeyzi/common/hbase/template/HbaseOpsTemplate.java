@@ -127,8 +127,7 @@ public class HbaseOpsTemplate  implements HbaseOperations{
         if (StringUtils.isBlank(tableName)) {
             return lists;
         }
-        try (Table table = HbaseConnectFactory.connection.getTable(TableName.valueOf(tableName));
-             Admin admin = HbaseConnectFactory.connection.getAdmin()) {
+        try (Admin admin = HbaseConnectFactory.connection.getAdmin()) {
             if (!admin.isTableAvailable(TableName.valueOf(tableName))) {
                 return lists;
             }
