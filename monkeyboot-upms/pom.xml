@@ -15,6 +15,12 @@
     <artifactId>monkeyboot-upms</artifactId>
 
     <dependencies>
+        <!--hbase-->
+        <dependency>
+            <groupId>com.monkeyzi</groupId>
+            <artifactId>monkeyboot-common-hbase-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--common-sceurity-->
         <dependency>
             <groupId>com.monkeyzi</groupId>
