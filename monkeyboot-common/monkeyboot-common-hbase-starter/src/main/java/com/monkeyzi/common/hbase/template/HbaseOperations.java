@@ -157,11 +157,29 @@ public interface HbaseOperations {
     String getCellValue(String tableName, String rowKey, String family, String qualifier);
 
     /**
-     * 条件查询
+     * 条件查询----多个条件同时满足才会返回数据,条件之间是and的关系
      * @param obj
      * @param param
      * @param <T>
      * @return
      */
     <T> List<T> queryScan(T obj, Map<String, String> param);
+
+    /**
+     * 分页条件查询
+     * @param tableName
+     * @param family
+     * @param param  普通条件查询map
+     * @param param2 需要正则条件查询map
+     * @param startKey
+     * @param endKey
+     * @param pageSize
+     * @return
+     */
+    List<Result> queryScan(String tableName,String family,
+                           Map<String,String> param,Map<String,String> param2,
+                           String startKey,String endKey,Integer pageSize);
+
+
+
 }

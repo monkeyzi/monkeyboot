@@ -5,17 +5,11 @@ import com.monkeyzi.common.hbase.column.HbaseTable;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author doubleM
- * @ClassName: HbaseExampleEntity
- * @Description: 与Hbase中表的rowkey、列簇、列名以及列对应
- * @date 2018年4月25日 下午2:13:26
- */
+import java.io.Serializable;
 @Getter
 @Setter
-@HbaseTable(tableName = "uws_phone_history")
-public class HbaseExampleEntity {
-
+@HbaseTable(tableName = "uws_mac_history")
+public class HbaseMacEntity implements Serializable {
     /**
      * 标示数据中rowkey，用在新增时候填充
      */
@@ -25,16 +19,17 @@ public class HbaseExampleEntity {
     /**
      * 列簇、列映射的实体名称，用于查询的数据返回
      */
-    @HbaseColumn(family = "cf", qualifier = "phone")
-    private String phone;
+    @HbaseColumn(family = "cf", qualifier = "mac")
+    private String mac;
 
-    @HbaseColumn(family = "cf", qualifier = "sex")
-    private String sex;
+    @HbaseColumn(family = "cf", qualifier = "time")
+    private String time;
 
-    @HbaseColumn(family = "cf", qualifier = "app")
-    private String app;
+    @HbaseColumn(family = "cf", qualifier = "day")
+    private String day;
 
     @HbaseColumn(family = "cf", qualifier = "device")
     private String device;
+
 
 }

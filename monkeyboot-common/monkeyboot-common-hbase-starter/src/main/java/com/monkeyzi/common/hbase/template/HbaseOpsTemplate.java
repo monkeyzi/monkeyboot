@@ -1,12 +1,17 @@
 package com.monkeyzi.common.hbase.template;
 
+import cn.hutool.core.util.StrUtil;
 import com.monkeyzi.common.hbase.beanutil.HbaseBeanUtil;
 import com.monkeyzi.common.hbase.column.HbaseColumn;
 import com.monkeyzi.common.hbase.config.HbaseConnectFactory;
+import com.monkeyzi.common.hbase.exception.HbaseException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
@@ -333,7 +338,108 @@ public class HbaseOpsTemplate  implements HbaseOperations{
 
     @Override
     public <T> List<T> queryScan(T obj, Map<String, String> param) {
-        return null;
+        List<T> objs=new ArrayList<>();
+        String tableName=HbaseBeanUtil.getTable(obj);
+        if (StringUtils.isBlank(tableName)) {
+            return null;
+        }
+        try(HBaseAdmin admin= (HBaseAdmin) HbaseConnectFactory.connection.getAdmin();
+           Table table=HbaseConnectFactory.connection.getTable(TableName.valueOf(tableName))) {
+           if (!admin.isTableAvailable(tableName)){
+               return objs;
+           }
+           Scan scan=new Scan();
+           List<Filter> filters=new ArrayList<>();
+
+           for (Map.Entry<String,String> entry:param.entrySet()){
+               Class<?> clazz = obj.getClass();
+               Field[] fields = clazz.getDeclaredFields();
+               for (Field field:fields){
+                   if (!field.isAnnotationPresent(HbaseColumn.class)) {
+                       continue;
+                   }
+                   field.setAccessible(true);
+                   HbaseColumn orm = field.getAnnotation(HbaseColumn.class);
+                   String family=orm.family();
+                   String qualifier=orm.qualifier();
+                   if (qualifier.equals(entry.getKey())){
+                       Filter filter = new SingleColumnValueFilter(Bytes.toBytes(family), Bytes.toBytes(entry.getKey()),
+                               CompareFilter.CompareOp.EQUAL, Bytes.toBytes(entry.getValue()));
+                       filters.add(filter);
+                   }
+               }
+           }
+            if (CollectionUtils.isNotEmpty(filters)){
+                FilterList filterList=new FilterList(FilterList.Operator.MUST_PASS_ALL,filters);
+                scan.setFilter(filterList);
+            }
+            ResultScanner scanner = table.getScanner(scan);
+            for (Result result : scanner) {
+                T beanClone = (T) BeanUtils.cloneBean(HbaseBeanUtil.resultToBean(result, obj));
+                objs.add(beanClone);
+            }
+        }catch (Exception e){
+            log.error("queryScan条件查询异常 e={}",e);
+            throw new HbaseException("查询异常");
+        }
+        return objs;
+    }
+
+    @Override
+    public List<Result> queryScan(String tableName, String family, Map<String, String> param,
+                                  Map<String, String> param2,
+                                  String startKey, String endKey, Integer pageSize) {
+        List<Result> objs=new ArrayList<>();
+        if (StringUtils.isEmpty(tableName)||StringUtils.isEmpty(family)
+                ||StringUtils.isEmpty(startKey)||StringUtils.isEmpty(endKey)||pageSize==null){
+            log.error("hbase条件查询参数为空");
+            throw new HbaseException("hbase条件查询参数为空");
+        }
+        try(HBaseAdmin admin= (HBaseAdmin) HbaseConnectFactory.connection.getAdmin();
+            Table table=HbaseConnectFactory.connection.getTable(TableName.valueOf(tableName))) {
+            if (!admin.isTableAvailable(tableName)){
+                return objs;
+            }
+            Scan scan=new Scan();
+            byte[] startRow=Bytes.toBytes(startKey);
+            byte[] endRow=Bytes.toBytes(endKey);
+            scan.setStartRow(startRow);
+            scan.setStopRow(endRow);
+            List<Filter> filters=new ArrayList<>();
+            Filter pageFilter = new PageFilter(pageSize);
+            filters.add(pageFilter);
+            for (Map.Entry<String,String> en:param2.entrySet()){
+                RegexStringComparator comp = new RegexStringComparator(en.getValue());
+                SingleColumnValueFilter singleColumnValueFilter =
+                        new SingleColumnValueFilter(Bytes.toBytes(family), Bytes.toBytes(en.getKey()), CompareFilter.CompareOp.EQUAL, comp);
+                filters.add(singleColumnValueFilter);
+            }
+            for (Map.Entry<String,String> en:param.entrySet()){
+                SingleColumnValueFilter singleColumnValueFilter =
+                        new SingleColumnValueFilter(Bytes.toBytes(family), Bytes.toBytes(en.getKey()),
+                                CompareFilter.CompareOp.EQUAL, en.getValue().getBytes());
+                filters.add(singleColumnValueFilter);
+            }
+            Filter filter=new FilterList(filters);
+            scan.setFilter(filter);
+            ResultScanner scanner = table.getScanner(scan);
+            for (Result result : scanner) {
+                objs.add(result);
+            }
+        }catch (Exception e){
+            log.error("queryScan查询异常 e={}",e);
+            throw new HbaseException("hbase查询异常");
+        }
+        return objs;
+    }
+
+    public <T> List<T> resultToBean(List<Result> result, T obj) throws Exception {
+        List<T> results=new ArrayList<>();
+        for (Result  rs:result){
+            T  t=HbaseBeanUtil.resultToBean(rs,obj);
+            results.add(t);
+        }
+        return results;
     }
 
 
