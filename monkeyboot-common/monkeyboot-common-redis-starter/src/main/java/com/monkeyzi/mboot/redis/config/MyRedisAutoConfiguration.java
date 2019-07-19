@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 @ConditionalOnClass(MbootRedisTemplate.class)
 @EnableConfigurationProperties({RedisProperties.class})
-public class RedisAutoConfiguration {
+public class MyRedisAutoConfiguration {
 
 
 
