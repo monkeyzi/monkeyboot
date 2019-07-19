@@ -1,12 +1,10 @@
 package com.monkeyzi.mboot.redis.cache;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +26,6 @@ import java.util.Map;
  */
 
 @Configuration
-@AutoConfigureAfter({RedisAutoConfiguration.class})
 @ConditionalOnBean({RedisConnectionFactory.class})
 @ConditionalOnMissingBean({CacheManager.class})
 @EnableConfigurationProperties(CacheProperties.class)

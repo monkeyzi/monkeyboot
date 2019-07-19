@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +110,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     }
 
     @Override
+    @Cacheable(value = "user_details", key = "#id  + '_user'")
     public MbootUser getUserInfoVoById(Integer id) {
         return mbootUserMapper.selectUserInfoVoById(id);
     }
