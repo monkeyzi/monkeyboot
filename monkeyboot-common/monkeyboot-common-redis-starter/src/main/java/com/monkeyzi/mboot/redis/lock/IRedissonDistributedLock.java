@@ -50,6 +50,10 @@ public interface IRedissonDistributedLock {
      */
     boolean tryLock(String lockKey, TimeUnit unit, long waitTime, long leaseTime);
 
+    /**
+     * 释放锁
+     * @param lock
+     */
     void unlock(RLock lock);
 
     /**
