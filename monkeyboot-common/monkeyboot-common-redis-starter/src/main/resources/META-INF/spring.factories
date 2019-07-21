@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.monkeyzi.mboot.redis.config.MyRedisAutoConfiguration,\
+  com.monkeyzi.mboot.redis.config.RedissonAutoConfiguration,\
   com.monkeyzi.mboot.redis.cache.RedisCacheManagerConfig,\
   com.monkeyzi.mboot.redis.cache.RedisCacheAutoConfiguration
