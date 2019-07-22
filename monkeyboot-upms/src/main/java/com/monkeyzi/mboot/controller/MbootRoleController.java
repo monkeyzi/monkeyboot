@@ -1,6 +1,7 @@
 package com.monkeyzi.mboot.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.annotation.MbootSysLog;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootRole;
@@ -55,6 +56,7 @@ public class MbootRoleController {
 
     @ApiOperation(value = "保存角色")
     @PostMapping(value = "/save")
+    @MbootSysLog(value ="保存角色")
     public R  saveRole(@Valid @RequestBody MbootRole role){
         log.info("新增角色的参数为 param={}",role);
         role.setCreateBy(SecurityUtils.getLoginUser().getUsername());
@@ -68,6 +70,7 @@ public class MbootRoleController {
 
     @ApiOperation(value = "修改角色")
     @PutMapping(value = "/edit")
+    @MbootSysLog(value ="修改角色")
     public R  editRole(@Valid @RequestBody MbootRole role){
         log.info("修改角色的参数为 param={}",role);
         role.setUpdateBy(SecurityUtils.getLoginUser().getUsername());
@@ -88,6 +91,7 @@ public class MbootRoleController {
 
     @ApiOperation(value = "删除角色")
     @DeleteMapping(value = "/delRole/{id}")
+    @MbootSysLog(value ="删除角色")
     public R  delRoleById(@PathVariable Integer id){
         log.info("删除角色的参数为 param={}",id);
         boolean flag=mbootRoleService.delRoleById(id);
@@ -113,6 +117,7 @@ public class MbootRoleController {
 
     @ApiOperation(value = "给角色绑定菜单权限")
     @PutMapping(value = "/roleBindPermission")
+    @MbootSysLog(value ="给角色绑定菜单权限")
     public R roleBindPermission(@NotNull(message = "角色Id不能为空") @RequestParam Integer roleId,
                                 @NotEmpty(message = "权限Id列表不能为空")@RequestParam List<Integer> permissions){
         log.info("给角色绑定菜单权限的参数为 roleId={},permissions={}",roleId,permissions);

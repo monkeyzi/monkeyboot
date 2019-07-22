@@ -90,6 +90,7 @@ public class MbootPermissionController {
      */
     @ApiOperation(value = "新增菜单")
     @PostMapping(value = "/save")
+    @MbootSysLog(value = "新增菜单")
     public R save(@RequestBody @Valid PermissionSaveReq req){
         log.info("新增菜单的参数为 param={}",req);
         R r=mbootPermissionService.savePermission(req);
@@ -103,6 +104,7 @@ public class MbootPermissionController {
      */
     @ApiOperation(value = "修改菜单")
     @PutMapping(value = "/edit")
+    @MbootSysLog(value = "修改菜单")
     public R edit(@RequestBody @Valid PermissionSaveReq req){
         log.info("修改菜单的参数为 param={}",req);
         R r=mbootPermissionService.editPermission(req);
@@ -116,6 +118,7 @@ public class MbootPermissionController {
      */
     @ApiOperation(value = "删除菜单")
     @DeleteMapping(value = "/del/{id}")
+    @MbootSysLog(value = "删除菜单")
     public R removePermissionById(@PathVariable Integer id){
         log.info("删除菜单权限的参数为 param={}",id);
         R r=mbootPermissionService.removePermissionById(id);

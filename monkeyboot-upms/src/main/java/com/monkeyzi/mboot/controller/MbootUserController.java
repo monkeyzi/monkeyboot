@@ -15,8 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +84,7 @@ public class MbootUserController {
      */
     @ApiOperation(value = "删除用户")
     @DeleteMapping(value = "/del/{id}")
+    @MbootSysLog(value ="删除用户")
     public R deleteUserById(@PathVariable Integer id){
         log.info("删除用户的参数 param={}",id);
         boolean flag=mbootUserService.deleteUserById(id);
@@ -103,6 +102,7 @@ public class MbootUserController {
      */
     @ApiOperation(value = "新增用户")
     @PostMapping(value = "/save")
+    @MbootSysLog(value ="新增用户")
     public R saveUser(@Valid @RequestBody UserSaveReq req){
         log.info("新增用户的参数为 param={}",req);
         boolean flag=mbootUserService.saveUser(req);
@@ -120,6 +120,7 @@ public class MbootUserController {
      */
     @PutMapping(value = "/edit")
     @ApiOperation(value = "更新用户")
+    @MbootSysLog(value ="修改用户")
     public R editUser(@Valid @RequestBody UserEditReq req){
         log.info("修改用户的参数为 param={}",req);
         R flag=mbootUserService.editUser(req);
@@ -133,6 +134,7 @@ public class MbootUserController {
      */
     @ApiOperation(value = "登录用户修改自己的基本信息")
     @PutMapping(value = "/edit/info")
+    @MbootSysLog(value ="登录用户修改自己的基本信息")
     public R editUserInfo(@Valid BasicInfoEditReq req){
         log.info("修改用户的参数为 param={}",req);
         R flag=mbootUserService.editUserInfo(req);
@@ -148,6 +150,7 @@ public class MbootUserController {
      */
     @ApiOperation(value = "登录用户修改密码")
     @PutMapping(value = "/edit/pwd")
+    @MbootSysLog(value ="登录用户修改密码")
     public R editUserPwd(@NotBlank(message = "原密码不能为空") @RequestParam String password,
                          @NotBlank(message = "新密码不能为空")@RequestParam String newPassword){
         log.info("修改用户的参数为 param1={},param2={}",password,newPassword);

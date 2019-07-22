@@ -1,5 +1,6 @@
 package com.monkeyzi.mboot.controller;
 
+import com.monkeyzi.mboot.annotation.MbootSysLog;
 import com.monkeyzi.mboot.common.core.dto.DeptTreeDto;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.entity.MbootDept;
@@ -64,6 +65,7 @@ public class MbootDeptController {
      */
     @ApiOperation(value = "删除某个部门")
     @DeleteMapping(value = "/del/{id}")
+    @MbootSysLog(value = "删除部门")
     public R removeDeptById(@PathVariable Integer id){
         log.info("删除部门的参数为 param={}",id);
         this.mbootDeptService.removeById(id);
@@ -77,6 +79,7 @@ public class MbootDeptController {
      */
     @ApiOperation(value = "新增部门")
     @PostMapping(value = "/save")
+    @MbootSysLog(value = "新增部门")
     public R save(@RequestBody @Valid DeptSaveReq req){
         log.info("新增部门的参数为 param={}",req);
         R r=this.mbootDeptService.saveDept(req);
@@ -90,6 +93,7 @@ public class MbootDeptController {
      */
     @ApiOperation(value = "修改部门")
     @PutMapping(value = "/edit")
+    @MbootSysLog(value = "修改部门")
     public R edit(@RequestBody @Valid DeptEditReq req){
         log.info("修改部门的参数为 param={}",req);
         R r=this.mbootDeptService.editDept(req);

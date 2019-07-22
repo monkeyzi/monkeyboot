@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.security.handler;
 
 import com.monkeyzi.mboot.common.core.constant.SecurityConstants;
 import com.monkeyzi.mboot.common.core.holder.SpringContextHolder;
+import com.monkeyzi.mboot.common.security.exception.NoHandlerFoundException;
 import com.monkeyzi.mboot.common.security.handler.AbstractAuthenticationSuccessEventHandler;
 import com.monkeyzi.mboot.log.MbootLoginLogEvent;
 import com.monkeyzi.mboot.utils.util.WebUtils;
@@ -26,11 +27,16 @@ public class MbootAuthenticationSuccessEventHandler extends AbstractAuthenticati
 	 */
 	@Override
 	public void handle(Authentication authentication) {
-		HttpServletRequest request = WebUtils.getRequest();
-		String path = request.getRequestURI();
-		if (path.equals(SecurityConstants.OAUTH_TOKEN_URL)) {
-			log.info("用户={}登录成功", authentication.getPrincipal());
-			SpringContextHolder.publishEvent(new MbootLoginLogEvent(request));
+		try {
+			HttpServletRequest request = WebUtils.getRequest();
+			String path = request.getRequestURI();
+			if (path.equals(SecurityConstants.OAUTH_TOKEN_URL)) {
+				log.info("用户={}登录成功", authentication.getPrincipal());
+				SpringContextHolder.publishEvent(new MbootLoginLogEvent(request));
+			}
+		}catch (Exception e){
+            log.error("访问的资源不存在 404 eMsg={},cause={}",e.getMessage(),e.getCause());
 		}
+
 	}
 }
