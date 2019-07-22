@@ -179,7 +179,9 @@ public class MbootGlobalExceptionHandler {
                 .method(method)
                 .build();
         SpringContextHolder.publishEvent(new MbootErrorLogEvent(errorLogDto));
+
         log.error("异常信息uri={},method={},exceptionType={}",uri,method,exceptionType);
+        e.printStackTrace();
         return R.error(500,"哎呀，接口开小差了！");
     }
 

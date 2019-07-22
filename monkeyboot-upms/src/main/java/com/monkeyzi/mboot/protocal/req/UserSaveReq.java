@@ -40,7 +40,7 @@ public class UserSaveReq implements Serializable {
     @NotNull(message = "部门不能为空")
     private Integer deptId;
     @ApiModelProperty(value = "用户状态",required = true)
-    @NotEmpty(message = "用户状态不能为空")
+    @NotNull(message = "用户状态不能为空")
     private Integer status;
     @ApiModelProperty(value = "角色",required = true)
     @NotEmpty(message = "角色不能为空")

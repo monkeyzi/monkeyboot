@@ -39,7 +39,7 @@ public class MbootDeptServiceImpl extends SuperServiceImpl<MbootDeptMapper,Mboot
         List<MbootDept> list=this.list(new QueryWrapper<MbootDept>().lambda()
                 .eq(MbootDept::getIsDel,DelStatusEnum.IS_NOT_DEL.getType()));
         ModelMapper modelMapper=new ModelMapper();
-        List<DeptTreeDto> dtoList=modelMapper.map(list,new TypeToken<List<MbootDept>>() {}.getType());
+        List<DeptTreeDto> dtoList=modelMapper.map(list,new TypeToken<List<DeptTreeDto>>() {}.getType());
         return TreeUtil.build(dtoList,SecurityConstants.DEPT_ROOT);
     }
 

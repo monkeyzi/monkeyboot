@@ -2,6 +2,7 @@ package com.monkeyzi.mboot.common.security.config;
 
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monkeyzi.mboot.common.security.exception.NoHandlerFoundException;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +34,15 @@ public class MbootAuthExceptionEntryPoint implements AuthenticationEntryPoint {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		Map<String,Object> result=new HashMap<>(4);
-		result.put("code",401);
+		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 		result.put("success",Boolean.FALSE);
+		result.put("code",401);
+		result.put("data",null);
 		if (authException != null) {
 			result.put("msg",authException.getMessage());
-			result.put("data",null);
 		}else {
 			result.put("msg","请登录认证！");
-			result.put("data",null);
 		}
-		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));
 	}

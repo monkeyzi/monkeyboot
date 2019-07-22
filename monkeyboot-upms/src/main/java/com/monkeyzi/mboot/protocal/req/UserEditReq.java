@@ -31,7 +31,7 @@ public class UserEditReq implements Serializable {
     private String  email;
     @NotNull(message = "部门不能为空")
     private Integer deptId;
-    @NotEmpty(message = "用户状态不能为空")
+    @NotNull(message = "用户状态不能为空")
     private Integer status;
     @NotEmpty(message = "角色不能为空")
     private List<Integer> role;
