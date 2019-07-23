@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.controller;
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.mboot.annotation.MbootSysLog;
 import com.monkeyzi.mboot.common.core.result.R;
+import com.monkeyzi.mboot.common.security.utils.SecurityUtils;
 import com.monkeyzi.mboot.entity.MbootUser;
 import com.monkeyzi.mboot.protocal.req.BasicInfoEditReq;
 import com.monkeyzi.mboot.protocal.req.UserEditReq;
@@ -137,7 +138,8 @@ public class MbootUserController {
     @MbootSysLog(value ="登录用户修改自己的基本信息")
     public R editUserInfo(@Valid BasicInfoEditReq req){
         log.info("修改用户的参数为 param={}",req);
-        R flag=mbootUserService.editUserInfo(req);
+        Integer userId=SecurityUtils.getLoginUser().getId();
+        R flag=mbootUserService.editUserInfo(req,userId);
         return  flag;
     }
 

@@ -27,6 +27,7 @@
 		<result property="description" column="description"/>
 		<result property="browser" column="browser"/>
 		<result property="os" column="os"/>
+		<result property="deptName" column="deptName"/>
 		<collection property="roleList" ofType="com.monkeyzi.mboot.entity.MbootRole">
 			<id column="role_id" property="id"/>
 			<result column="role_name" property="roleName"/>

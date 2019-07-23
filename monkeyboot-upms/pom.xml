@@ -21,6 +21,12 @@
             <artifactId>monkeyboot-common-security-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--redisson-->
+        <dependency>
+            <groupId>com.monkeyzi</groupId>
+            <artifactId>monkeyboot-common-redisson-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--swagger-->
         <dependency>
             <groupId>com.monkeyzi</groupId>

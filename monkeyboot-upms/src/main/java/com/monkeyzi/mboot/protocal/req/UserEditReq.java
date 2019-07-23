@@ -1,6 +1,7 @@
 package com.monkeyzi.mboot.protocal.req;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +17,7 @@ import java.util.List;
  * @description:
  */
 @Data
+@ToString(callSuper = true,exclude ="password")
 public class UserEditReq implements Serializable {
     @NotNull(message = "用户Id不能为空")
     private Integer id;

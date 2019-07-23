@@ -3,6 +3,7 @@ package com.monkeyzi.mboot.protocal.req;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value = "新增用户参数")
+@ToString(callSuper = true,exclude ="password")
 public class UserSaveReq implements Serializable {
     @ApiModelProperty(value = "用户名",required = true)
     @NotBlank(message = "用户名不能为空")

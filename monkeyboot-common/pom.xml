@@ -19,6 +19,7 @@
         <module>monkeyboot-common-security-starter</module>
         <module>monkeyboot-common-swagger-starter</module>
         <module>monkeyboot-common-hbase-starter</module>
+        <module>monkeyboot-common-redisson-starter</module>
     </modules>
 
 

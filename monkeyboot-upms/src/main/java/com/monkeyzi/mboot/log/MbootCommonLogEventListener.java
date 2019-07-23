@@ -28,6 +28,7 @@ public class MbootCommonLogEventListener {
     @Order
     @EventListener(MbootCommonLogEvent.class)
     public void saveLog(MbootCommonLogEvent mbootCommonLogEvent){
+        log.debug("记录操作日志");
         MbootLog mbootLog= (MbootLog) mbootCommonLogEvent.getSource();
         mbootLogService.save(mbootLog);
 

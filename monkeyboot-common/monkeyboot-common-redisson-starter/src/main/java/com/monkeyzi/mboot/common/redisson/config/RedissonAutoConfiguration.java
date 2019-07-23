@@ -1,6 +1,6 @@
-package com.monkeyzi.mboot.redis.config;
+package com.monkeyzi.mboot.common.redisson.config;
 
-import com.monkeyzi.mboot.redis.lock.RedissonDistributedLock;
+import com.monkeyzi.mboot.common.redisson.lock.RedissonDistributedLock;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
@@ -50,5 +50,7 @@ public class RedissonAutoConfiguration {
     public RedissonDistributedLock redissonDistributedLock(RedissonClient client){
         return new RedissonDistributedLock(client);
     }
+
+
 
 }

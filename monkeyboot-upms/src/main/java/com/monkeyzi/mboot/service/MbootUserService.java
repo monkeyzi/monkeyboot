@@ -92,7 +92,7 @@ public interface MbootUserService extends ISuperService<MbootUser> {
      * @param req
      * @return
      */
-    R editUserInfo(BasicInfoEditReq req);
+    R editUserInfo(BasicInfoEditReq req,Integer userId);
 
     /**
      * 修改登录用户密码

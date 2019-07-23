@@ -1,4 +1,4 @@
-package com.monkeyzi.mboot.redis.lock;
+package com.monkeyzi.mboot.common.redisson.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

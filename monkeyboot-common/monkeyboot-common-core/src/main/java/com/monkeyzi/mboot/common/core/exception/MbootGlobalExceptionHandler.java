@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +107,17 @@ public class MbootGlobalExceptionHandler {
         return R.errorMsg("参数不合法");
     }
 
+    /**
+     * 参数异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public R methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e){
+        log.warn("请求参数不合法异常 e={}",e.getParameter());
+        return R.error(400, "坏的请求");
+    }
 
     /**
      * 参数绑定异常

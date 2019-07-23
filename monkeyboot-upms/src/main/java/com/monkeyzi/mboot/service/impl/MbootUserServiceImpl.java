@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -117,6 +119,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user_details",key = "#id  + '_user'")
     public boolean deleteUserById(Integer id) {
         //删除用户关联的角色信息
         mbootUserRoleService.deleteUserRoleByUserId(id);
@@ -148,6 +151,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user_details",key = "#req.getId()  + '_user'")
     public R editUser(UserEditReq req) {
         MbootUser user=this.getById(req.getId());
         if (user==null){
@@ -200,8 +204,8 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R editUserInfo(BasicInfoEditReq req) {
-        Integer userId=SecurityUtils.getLoginUser().getId();
+    @CacheEvict(value = "user_details",key = "#userId + '_user'")
+    public R editUserInfo(BasicInfoEditReq req,Integer userId) {
         MbootUser user=this.getById(userId);
         if (user==null){
             return R.errorMsg("修改失败,用户不存在！");
