@@ -16,7 +16,7 @@ public class UserPageReq extends BasePageReq {
 
     private String  endTime;
 
-    private List<Integer> deptId;
+    private List<Integer> deptIds;
 
     private String  username;
 

@@ -78,9 +78,9 @@
 		<if test="status != null" >
 			AND ${alias}.status = #{status,jdbcType=INTEGER}
 		</if>
-		<if test="deptId !=null and deptId.size>0 ">
+		<if test="deptIds !=null and deptIds.size>0 ">
 			AND ${alias}.dept_id in
-			<foreach collection="list" item="deptId" open="(" separator="," close=")">
+			<foreach collection="deptIds" item="deptId" open="(" separator="," close=")">
 				#{deptId}
 			</foreach>
 		</if>
