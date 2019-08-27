@@ -9,6 +9,7 @@ public class CountDownLatchDemo {
     public static void main(String[] args) throws InterruptedException {
         final CountDownLatch startGate=new CountDownLatch(1);
         final CountDownLatch endGate=new CountDownLatch(5);
+
         //线程池20        
         ExecutorService exce=Executors.newCachedThreadPool();
         for (int i=0;i<5;i++){
@@ -18,6 +19,7 @@ public class CountDownLatchDemo {
                     System.out.println(num+"号选手准备就绪，准备裁判员哨向！");
                     try {
                         startGate.await();
+                        Thread.sleep((long) (Math.random()*10000));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
