@@ -2,6 +2,7 @@ package com.monkeyzi.mboot.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.constant.GlobalConstants;
 import com.monkeyzi.mboot.common.core.constant.OssSettingConstants;
 import com.monkeyzi.mboot.common.core.exception.BusinessException;
 import com.monkeyzi.mboot.common.core.result.R;
@@ -178,7 +179,7 @@ public class MbootFileServiceImpl extends SuperServiceImpl<MbootFileMapper,Mboot
     public PageInfo getFilePageByCondition(FilePageReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         if (PublicUtil.isNotEmpty(req.getEndTime())){
-            req.setEndTime(req.getEndTime()+" 23:59:59");
+            req.setEndTime(req.getEndTime()+GlobalConstants.DAY_LAST_TIME);
         }
         List<MbootFile> list=this.mbootFileMapper.selectFileByPageAndCondition(req);
         PageInfo pageInfo=new PageInfo(list);

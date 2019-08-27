@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.monkeyzi.mboot.common.core.constant.GlobalConstants;
 import com.monkeyzi.mboot.common.core.exception.BusinessException;
 import com.monkeyzi.mboot.common.core.result.R;
 import com.monkeyzi.mboot.common.core.service.impl.SuperServiceImpl;
@@ -68,7 +69,7 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     public PageInfo listPageUserByCondition(UserPageReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         if (PublicUtil.isNotEmpty(req.getEndTime())){
-            req.setEndTime(req.getEndTime()+" 23:59:59");
+            req.setEndTime(req.getEndTime()+GlobalConstants.DAY_LAST_TIME);
         }
         List<MbootUser> list=mbootUserMapper.selectUserByPageAndCondition(req);
         PageInfo pageInfo=new PageInfo(list);
