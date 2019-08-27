@@ -3,6 +3,8 @@ package com.monkeyzi.mboot.protocal.req;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * 用户列表分页查询入参
  */
@@ -14,7 +16,7 @@ public class UserPageReq extends BasePageReq {
 
     private String  endTime;
 
-    private Integer deptId;
+    private List<Integer> deptId;
 
     private String  username;
 

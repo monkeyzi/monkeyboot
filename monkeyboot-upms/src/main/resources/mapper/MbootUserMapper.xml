@@ -78,6 +78,12 @@
 		<if test="status != null" >
 			AND ${alias}.status = #{status,jdbcType=INTEGER}
 		</if>
+		<if test="deptId !=null and deptId.size>0 ">
+			AND ${alias}.dept_id in
+			<foreach collection="list" item="deptId" open="(" separator="," close=")">
+				#{deptId}
+			</foreach>
+		</if>
 		<if test="startTime != null and startTime != ''">
 			AND ${alias}.create_time &gt;= str_to_date(#{startTime}, '%Y-%m-%d %H')
 		</if>
