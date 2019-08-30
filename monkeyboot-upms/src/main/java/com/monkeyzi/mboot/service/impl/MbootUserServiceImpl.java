@@ -132,6 +132,10 @@ public class MbootUserServiceImpl extends SuperServiceImpl<MbootUserMapper,Mboot
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveUser(UserSaveReq req) {
+        int count=mbootUserMapper.selectCount(new QueryWrapper<MbootUser>().lambda().eq(MbootUser::getUsername,req.getUsername()));
+        if (count>0){
+            throw new BusinessException("用户名已存在！");
+        }
         MbootUser mbootUser=new MbootUser();
         ModelMapper modelMapper=new ModelMapper();
         modelMapper.map(req,mbootUser);

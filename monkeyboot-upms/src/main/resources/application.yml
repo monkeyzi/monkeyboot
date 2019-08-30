@@ -73,6 +73,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     # 是否开启缓存
     cache-enabled: false
+    # log打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   #别名
   type-aliases-package: com.monkeyzi.mboot.entity
 
