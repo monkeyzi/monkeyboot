@@ -19,7 +19,7 @@
         <lombok.version>1.18.6</lombok.version>
         <hutool.vsersion>4.5.5</hutool.vsersion>
         <spring-platform.version>Cairo-SR7</spring-platform.version>
-        <mysql.connector.version>8.0.15</mysql.connector.version>
+        <mysql.connector.version>8.0.16</mysql.connector.version>
         <mybatis.plus.version>3.1.0</mybatis.plus.version>
         <druid.starter.version>1.1.16</druid.starter.version>
         <pagehelper.version>1.2.3</pagehelper.version>
